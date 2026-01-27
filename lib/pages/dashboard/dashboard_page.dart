@@ -31,7 +31,7 @@ class _DashboardPageState extends State<DashboardPage> {
     'Kepada Yth. \n{nama_tamu} \n\nDengan penuh kasih dan harapan, kami mengundang Anda untuk menjadi saksi awal kisah baru kami. Pada hari ketika dua hati dipersatukan dalam ikatan suci. \n\nAkan menjadi kebahagiaan tersendiri bagi kami apabila Anda, yang telah menjadi bagian dari cerita dan perjalanan kami, dapat hadir dan menyaksikan momen sakral ini. \n\nDetail acara dapat Anda lihat melalui undangan digital berikut: \n{link_undangan} \n\nKehadiran {nama_tamu} akan melengkapi kebahagiaan kami dan menjadi doa restu yang sangat berarti. \n\nDengan penuh rasa syukur, \n{mempelai_wanita} & {mempelai_pria}',
   ];
 
-  bool _isLoading = true;
+  bool _isLoading = false;
   bool _isContainsError = false;
 
   String? _invitationId;
