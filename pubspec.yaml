@@ -54,3 +54,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/templates/formulir_tamu_undangan.xlsx
