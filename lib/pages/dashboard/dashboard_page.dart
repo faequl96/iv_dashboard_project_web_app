@@ -146,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   style: AppFonts.nunito(fontSize: 16, fontWeight: .w800),
                 ),
                 const SizedBox(width: 6),
-                Image.asset('assets/logos/in_vite_logo.png', height: 20, package: 'iv_project_invitation_theme', fit: .fitHeight),
+                Image.asset('assets/logos/in_vite_logo.png', height: 20, fit: .fitHeight),
                 const SizedBox(width: 6),
                 if (_localeCubit.state.languageCode == 'en') Text('App', style: AppFonts.nunito(fontSize: 16, fontWeight: .w800)),
               ],

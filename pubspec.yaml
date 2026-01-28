@@ -57,4 +57,5 @@ flutter:
 
   assets:
     - assets/
+    - assets/logos/
     - assets/templates/formulir_tamu_undangan.xlsx
