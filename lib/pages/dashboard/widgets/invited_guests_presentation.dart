@@ -166,7 +166,8 @@ class _InvitedGuestItem extends StatelessWidget {
                           onTap: () async {
                             final phone = invitedGuest.phone;
                             if (phone == null) return;
-                            final phoneNumber = phone[0] == '0' ? phone.replaceFirst('0', '62') : phone;
+                            final purifyPhone = phone.split('_').first;
+                            final phoneNumber = purifyPhone[0] == '0' ? purifyPhone.replaceFirst('0', '62') : purifyPhone;
                             final message = controller.text
                                 .replaceAll('{nama_tamu}', invitedGuest.nickname)
                                 .replaceAll('{link_undangan}', '${Uri.base.origin}?id=$invitationId&to=${invitedGuest.id}')
