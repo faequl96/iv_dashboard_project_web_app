@@ -207,7 +207,7 @@ class _InvitedGuestItem extends StatelessWidget {
                 children: [
                   Text('WhatsApp :', style: AppFonts.nunito()),
                   const Spacer(),
-                  Text(invitedGuest.phone!, style: AppFonts.nunito()),
+                  Text(invitedGuest.phone!.split('_').first, style: AppFonts.nunito()),
                 ],
               ),
             ),
