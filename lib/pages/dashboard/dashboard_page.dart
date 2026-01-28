@@ -288,7 +288,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             children: [
                               Text('WhatsApp :', style: AppFonts.nunito(fontSize: 15)),
                               const Spacer(),
-                              Text(invitedGuest.phone!, style: AppFonts.nunito(fontSize: 15, fontWeight: .w500)),
+                              Text(invitedGuest.phone!.split('_').first, style: AppFonts.nunito(fontSize: 15, fontWeight: .w500)),
                             ],
                           ),
                           const SizedBox(height: 4),
