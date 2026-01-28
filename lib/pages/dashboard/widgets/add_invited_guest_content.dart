@@ -79,7 +79,7 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
             invitationId: _invitationId!,
             name: name,
             nameInstance: '${name.replaceAll(' ', '-')}_${instance.replaceAll(' ', '-')}',
-            phone: '${whatsapp}_$_invitationId',
+            phone: whatsapp,
             souvenir: souvenir,
           ),
         );

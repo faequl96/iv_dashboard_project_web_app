@@ -166,8 +166,7 @@ class _InvitedGuestItem extends StatelessWidget {
                           onTap: () async {
                             final phone = invitedGuest.phone;
                             if (phone == null) return;
-                            final purifyPhone = phone.split('_').first;
-                            final phoneNumber = purifyPhone[0] == '0' ? purifyPhone.replaceFirst('0', '62') : purifyPhone;
+                            final phoneNumber = phone[0] == '0' ? phone.replaceFirst('0', '62') : phone;
                             final message = controller.text
                                 .replaceAll('{nama_tamu}', invitedGuest.nickname)
                                 .replaceAll('{link_undangan}', '${Uri.base.origin}?id=$invitationId&to=${invitedGuest.id}')
@@ -208,7 +207,7 @@ class _InvitedGuestItem extends StatelessWidget {
                 children: [
                   Text('WhatsApp :', style: AppFonts.nunito()),
                   const Spacer(),
-                  Text(invitedGuest.phone!.split('_').first, style: AppFonts.nunito()),
+                  Text(invitedGuest.phone!, style: AppFonts.nunito()),
                 ],
               ),
             ),
