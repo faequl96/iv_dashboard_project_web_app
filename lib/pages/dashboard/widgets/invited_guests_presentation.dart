@@ -169,7 +169,10 @@ class _InvitedGuestItem extends StatelessWidget {
                             final phoneNumber = phone[0] == '0' ? phone.replaceFirst('0', '62') : phone;
                             final message = controller.text
                                 .replaceAll('{nama_tamu}', invitedGuest.nickname)
-                                .replaceAll('{link_undangan}', '${Uri.base.origin}?id=$invitationId&to=${invitedGuest.id}')
+                                .replaceAll(
+                                  '{link_undangan}',
+                                  'https://iv-project-web-app.vercel.app/?id=$invitationId&to=${invitedGuest.id}',
+                                )
                                 .replaceAll('{mempelai_wanita}', brideName)
                                 .replaceAll('{mempelai_pria}', groomName);
                             final url = 'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
