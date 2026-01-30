@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/add_invited_guest_portal.dart';
+import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/edit_message_portal.dart';
 import 'package:iv_project_core/iv_project_core.dart';
 import 'package:iv_project_model/iv_project_model.dart';
 import 'package:iv_project_web_data/iv_project_web_data.dart';
@@ -10,15 +12,8 @@ import 'package:quick_dev_sdk/quick_dev_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvitedGuestsPresentation extends StatefulWidget {
-  const InvitedGuestsPresentation({
-    super.key,
-    required this.controller,
-    required this.invitationId,
-    required this.brideName,
-    required this.groomName,
-  });
+  const InvitedGuestsPresentation({super.key, required this.invitationId, required this.brideName, required this.groomName});
 
-  final TextEditingController controller;
   final String invitationId;
   final String brideName;
   final String groomName;
@@ -28,6 +23,16 @@ class InvitedGuestsPresentation extends StatefulWidget {
 }
 
 class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
+  final _messageController = TextEditingController();
+
+  final _messages = [
+    'Kepada Yth. \n{nama_tamu} \n\nDengan memohon rahmat dan ridha Tuhan Yang Maha Esa, kami bermaksud mengundang Anda untuk hadir pada hari bahagia kami. Pada momen istimewa ini, kami berharap dapat berbagi kebahagiaan dengan orang-orang terdekat yang memiliki tempat khusus dalam perjalanan hidup kami. \n\nDetail acara dapat Anda lihat melalui undangan digital berikut: \n{link_undangan} \n\nKehadiran {nama_tamu} akan melengkapi kebahagiaan kami dan menjadi doa restu yang sangat berarti. \n\nDengan penuh rasa syukur, \n{mempelai_wanita} & {mempelai_pria}',
+    'Kepada Yth. \n{nama_tamu} \n\nDengan penuh rasa syukur dan kebahagiaan, kami mengundang Anda untuk menghadiri hari bersejarah dalam hidup kami. Setelah melalui perjalanan panjang penuh doa, harapan, dan ikhtiar, akhirnya kami akan memulai babak baru sebagai pasangan suami istri. \n\nAkan menjadi kebahagiaan tersendiri bagi kami apabila Anda, dapat hadir dan menyaksikan momen sakral ini. Kehadiran {nama_tamu} akan melengkapi kebahagiaan kami dan menjadi doa restu yang sangat berarti. \n\nDetail acara dapat Anda lihat melalui undangan digital berikut: \n{link_undangan} \n\nDengan penuh rasa syukur, \n{mempelai_wanita} & {mempelai_pria}',
+    'Kepada Yth. \n{nama_tamu} \n\nDengan penuh kasih dan harapan, kami mengundang Anda untuk menjadi saksi awal kisah baru kami. Pada hari ketika dua hati dipersatukan dalam ikatan suci. \n\nAkan menjadi kebahagiaan tersendiri bagi kami apabila Anda, yang telah menjadi bagian dari cerita dan perjalanan kami, dapat hadir dan menyaksikan momen sakral ini. \n\nDetail acara dapat Anda lihat melalui undangan digital berikut: \n{link_undangan} \n\nKehadiran {nama_tamu} akan melengkapi kebahagiaan kami dan menjadi doa restu yang sangat berarti. \n\nDengan penuh rasa syukur, \n{mempelai_wanita} & {mempelai_pria}',
+  ];
+
+  final _activeTab = ValueNotifier(0);
+
   String? _invitationId;
 
   late final LocaleCubit _localeCubit;
@@ -43,7 +48,16 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _invitationId = Uri.base.queryParameters['id'];
       if (_invitationId != null) await _invitedGuestCubit.getsByInvitationId(_invitationId!);
+
+      _messageController.text = _messages[2];
     });
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -54,46 +68,148 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
         final isContainsError = _invitedGuestCubit.state.isContainsError;
         final invitedGuests = _invitedGuestCubit.state.invitedGuests ?? [];
 
-        return ListView(
-          padding: const .only(top: 14, bottom: 8),
-          children: [
-            if (isLoading) ...[
-              for (int i = 0; i < 4; i++) const _RSVPItemSkeleton(),
-            ] else if (isContainsError) ...[
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 100,
-                child: RetryWidget(
-                  errorMessage: _localeCubit.state.languageCode == 'id'
-                      ? 'Oops. Gagal memuat undangan.'
-                      : 'Oops. Failed to fetch invitation',
-                  onRetry: () async {
-                    if (_invitationId != null) await _invitedGuestCubit.getsByInvitationId(_invitationId!);
-                  },
+        final inviteds = invitedGuests.where((e) => !e.nameInstance.contains('Guest')).toList();
+        final guests = invitedGuests.where((e) => e.nameInstance.contains('Guest')).toList();
+
+        return DefaultTabController(
+          length: 2,
+          child: Stack(
+            alignment: .topCenter,
+            children: [
+              Padding(
+                padding: const .only(top: 48),
+                child: TabBarView(
+                  children: [
+                    ListView(
+                      padding: const .only(top: 14, bottom: 8),
+                      children: [
+                        if (isLoading) ...[
+                          for (int i = 0; i < 4; i++) const _RSVPItemSkeleton(),
+                        ] else if (isContainsError) ...[
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height - 100,
+                            child: RetryWidget(
+                              errorMessage: _localeCubit.state.languageCode == 'id'
+                                  ? 'Oops. Gagal memuat undangan.'
+                                  : 'Oops. Failed to fetch invitation',
+                              onRetry: () async {
+                                if (_invitationId != null) await _invitedGuestCubit.getsByInvitationId(_invitationId!);
+                              },
+                            ),
+                          ),
+                        ] else if (inviteds.isNotEmpty) ...[
+                          for (int i = 0; i < inviteds.length; i++)
+                            _InvitedGuestItem(
+                              controller: _messageController,
+                              invitationId: widget.invitationId,
+                              brideName: widget.brideName,
+                              groomName: widget.groomName,
+                              invitedGuest: inviteds[i],
+                            ),
+                        ] else ...[
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height - 100,
+                            child: Center(
+                              child: Text(
+                                _localeCubit.state.languageCode == 'id'
+                                    ? 'Tamu undangan belum ditambahkan'
+                                    : 'Invited guests have not been added',
+                                style: AppFonts.nunito(fontSize: 15, fontWeight: .w700),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    ListView(
+                      padding: const .only(top: 14, bottom: 8),
+                      children: [
+                        if (isLoading) ...[
+                          for (int i = 0; i < 4; i++) const _RSVPItemSkeleton(),
+                        ] else if (isContainsError) ...[
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height - 100,
+                            child: RetryWidget(
+                              errorMessage: _localeCubit.state.languageCode == 'id'
+                                  ? 'Oops. Gagal memuat undangan.'
+                                  : 'Oops. Failed to fetch invitation',
+                              onRetry: () async {
+                                if (_invitationId != null) await _invitedGuestCubit.getsByInvitationId(_invitationId!);
+                              },
+                            ),
+                          ),
+                        ] else if (guests.isNotEmpty) ...[
+                          for (int i = 0; i < guests.length; i++)
+                            _InvitedGuestItem(
+                              controller: _messageController,
+                              invitationId: widget.invitationId,
+                              brideName: widget.brideName,
+                              groomName: widget.groomName,
+                              invitedGuest: guests[i],
+                            ),
+                        ] else ...[
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height - 100,
+                            child: Center(
+                              child: Text(
+                                _localeCubit.state.languageCode == 'id' ? 'Belum ada tamu guest' : 'There are no guests yet',
+                                style: AppFonts.nunito(fontSize: 15, fontWeight: .w700),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ] else if (invitedGuests.isNotEmpty) ...[
-              for (int i = 0; i < invitedGuests.length; i++)
-                _InvitedGuestItem(
-                  controller: widget.controller,
-                  invitationId: widget.invitationId,
-                  brideName: widget.brideName,
-                  groomName: widget.groomName,
-                  invitedGuest: invitedGuests[i],
+              Card(
+                margin: EdgeInsets.zero,
+                color: Colors.white,
+                shape: const RoundedRectangleBorder(),
+                child: TabBar(
+                  onTap: (value) => _activeTab.value = value,
+                  labelColor: AppColor.primaryColor,
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  dividerHeight: 0,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorWeight: 5,
+                  indicator: const UnderlineTabIndicator(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(4), topRight: Radius.circular(4)),
+                    borderSide: BorderSide(width: 6, color: AppColor.primaryColor),
+                  ),
+                  tabs: const [
+                    Tab(
+                      height: 48,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Icon(Icons.drafts), SizedBox(width: 8), Text('Tamu Diundang')],
+                      ),
+                    ),
+                    Tab(
+                      height: 48,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Icon(Icons.circle), SizedBox(width: 8), Text('Tamu Guest')],
+                      ),
+                    ),
+                  ],
                 ),
-            ] else ...[
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 100,
-                child: Center(
-                  child: Text(
-                    _localeCubit.state.languageCode == 'id'
-                        ? 'Tamu undangan belum ditambahkan'
-                        : 'Invited guests have not been added',
-                    style: AppFonts.nunito(fontSize: 15, fontWeight: .w700),
+              ),
+              ValueListenableBuilder(
+                valueListenable: _activeTab,
+                builder: (_, value, _) => Positioned(
+                  bottom: 20,
+                  child: Row(
+                    children: [
+                      if (value == 0) ...[const AddInvitedGuestPortal(), const SizedBox(width: 10)],
+                      EditMessagePortal(controller: _messageController, messages: _messages),
+                    ],
                   ),
                 ),
               ),
             ],
-          ],
+          ),
         );
       },
     );

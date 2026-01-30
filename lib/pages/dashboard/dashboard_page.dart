@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/add_invited_guest_portal.dart';
-import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/edit_message_portal.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/general_title_app_bar.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/invited_guests_presentation.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/scan_qr_portal.dart';
@@ -23,14 +21,6 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final _messageController = TextEditingController();
-
-  final _messages = [
-    'Kepada Yth. \n{nama_tamu} \n\nDengan memohon rahmat dan ridha Tuhan Yang Maha Esa, kami bermaksud mengundang Anda untuk hadir pada hari bahagia kami. Pada momen istimewa ini, kami berharap dapat berbagi kebahagiaan dengan orang-orang terdekat yang memiliki tempat khusus dalam perjalanan hidup kami. \n\nDetail acara dapat Anda lihat melalui undangan digital berikut: \n{link_undangan} \n\nKehadiran {nama_tamu} akan melengkapi kebahagiaan kami dan menjadi doa restu yang sangat berarti. \n\nDengan penuh rasa syukur, \n{mempelai_wanita} & {mempelai_pria}',
-    'Kepada Yth. \n{nama_tamu} \n\nDengan penuh rasa syukur dan kebahagiaan, kami mengundang Anda untuk menghadiri hari bersejarah dalam hidup kami. Setelah melalui perjalanan panjang penuh doa, harapan, dan ikhtiar, akhirnya kami akan memulai babak baru sebagai pasangan suami istri. \n\nAkan menjadi kebahagiaan tersendiri bagi kami apabila Anda, dapat hadir dan menyaksikan momen sakral ini. Kehadiran {nama_tamu} akan melengkapi kebahagiaan kami dan menjadi doa restu yang sangat berarti. \n\nDetail acara dapat Anda lihat melalui undangan digital berikut: \n{link_undangan} \n\nDengan penuh rasa syukur, \n{mempelai_wanita} & {mempelai_pria}',
-    'Kepada Yth. \n{nama_tamu} \n\nDengan penuh kasih dan harapan, kami mengundang Anda untuk menjadi saksi awal kisah baru kami. Pada hari ketika dua hati dipersatukan dalam ikatan suci. \n\nAkan menjadi kebahagiaan tersendiri bagi kami apabila Anda, yang telah menjadi bagian dari cerita dan perjalanan kami, dapat hadir dan menyaksikan momen sakral ini. \n\nDetail acara dapat Anda lihat melalui undangan digital berikut: \n{link_undangan} \n\nKehadiran {nama_tamu} akan melengkapi kebahagiaan kami dan menjadi doa restu yang sangat berarti. \n\nDengan penuh rasa syukur, \n{mempelai_wanita} & {mempelai_pria}',
-  ];
-
   bool _isLoading = true;
   bool _isContainsError = false;
 
@@ -80,16 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
         return;
       }
       await _getInvitationById(_invitationId!);
-
-      _messageController.text = _messages[2];
     });
-  }
-
-  @override
-  void dispose() {
-    _messageController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -183,9 +164,8 @@ class _DashboardPageState extends State<DashboardPage> {
               child: Column(
                 children: [
                   const SizedBox(height: kToolbarHeight),
-                  Flexible(
+                  Expanded(
                     child: InvitedGuestsPresentation(
-                      controller: _messageController,
                       invitationId: _invitationId!,
                       brideName: _invitation!.invitationData.bride.nickname,
                       groomName: _invitation!.invitationData.groom.nickname,
@@ -216,17 +196,12 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               child: Padding(
                 padding: const .only(left: 14, right: 10, top: 7, bottom: 7),
-                child: Image.asset(
-                  'assets/logos/in_vite_logo.png',
-                  height: 24,
-                  package: 'iv_project_invitation_theme',
-                  fit: .fitHeight,
-                ),
+                child: Image.asset('assets/logos/in_vite_logo.png', height: 24, fit: .fitHeight),
               ),
             ),
             rightAction: ScanQrPortal(
               onDetectCompleted: () {
-                final invitedGuest = _invitedGuestCubit.state.invitedGuestUpdateById;
+                final invitedGuest = _invitedGuestCubit.state.invitedGuest;
                 if (invitedGuest == null) return;
                 final souvenir = invitedGuest.souvenir;
 
@@ -313,16 +288,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 );
               },
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            child: Row(
-              children: [
-                const AddInvitedGuestPortal(),
-                const SizedBox(width: 10),
-                EditMessagePortal(controller: _messageController, messages: _messages),
-              ],
             ),
           ),
         ],

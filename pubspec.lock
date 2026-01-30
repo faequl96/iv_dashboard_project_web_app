@@ -264,38 +264,30 @@ packages:
   iv_project_core:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.1.0+2"
-      resolved-ref: "152184f7db494db227662e725ccf6be4ea236da1"
-      url: "https://github.com/faequl96/iv_project_core.git"
-    source: git
+      path: "../iv_project_core"
+      relative: true
+    source: path
     version: "0.1.0"
   iv_project_model:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.1.1+2"
-      resolved-ref: f0a35bcbd2ec4ff4ef35b635fb2652f7c2ac9042
-      url: "https://github.com/faequl96/iv_project_model.git"
-    source: git
+      path: "../iv_project_model"
+      relative: true
+    source: path
     version: "0.1.1"
   iv_project_web_data:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.2.0+1"
-      resolved-ref: "93e4dbaf5194800465107d41796f353d9317b5c3"
-      url: "https://github.com/faequl96/iv_project_web_data.git"
-    source: git
-    version: "0.0.2"
+      path: "../iv_project_web_data"
+      relative: true
+    source: path
+    version: "0.0.1"
   iv_project_widget_core:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.0.2+7"
-      resolved-ref: "64585cc629416e88926ae8ac8e719402f3d18859"
-      url: "https://github.com/faequl96/iv_project_widget_core.git"
-    source: git
+      path: "../iv_project_widget_core"
+      relative: true
+    source: path
     version: "0.0.2"
   leak_tracker:
     dependency: transitive
@@ -500,11 +492,9 @@ packages:
   quick_dev_sdk:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.0.8+4"
-      resolved-ref: "3b139d9efd74b4fee1ce23c0b02b66a44659e2fd"
-      url: "https://github.com/faequl96/quick_dev_sdk.git"
-    source: git
+      path: "../quick_dev_sdk"
+      relative: true
+    source: path
     version: "0.0.8"
   shared_preferences:
     dependency: transitive

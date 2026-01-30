@@ -13,29 +13,19 @@ dependencies:
     sdk: flutter
 
   iv_project_model:
-    git:
-      url: https://github.com/faequl96/iv_project_model.git
-      ref: 0.1.1+2
+    path: ../iv_project_model
 
   iv_project_web_data:
-    git:
-      url: https://github.com/faequl96/iv_project_web_data.git
-      ref: 0.2.0+1
+    path: ../iv_project_web_data
 
   iv_project_core:
-    git:
-      url: https://github.com/faequl96/iv_project_core.git
-      ref: 0.1.0+2
+    path: ../iv_project_core
 
   iv_project_widget_core:
-    git:
-      url: https://github.com/faequl96/iv_project_widget_core.git
-      ref: 0.0.2+7
+    path: ../iv_project_widget_core
 
   quick_dev_sdk:
-    git:
-      url: https://github.com/faequl96/quick_dev_sdk.git
-      ref: 0.0.8+4
+    path: ../quick_dev_sdk
 
   go_router: ^17.0.1
   bloc: ^9.2.0
