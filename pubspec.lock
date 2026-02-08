@@ -274,29 +274,29 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.1.1+3"
-      resolved-ref: "2b844cf8c585e7bb97c444bc0896fd01e0534654"
+      ref: "0.1.2"
+      resolved-ref: "253253760f7a066a9ba26fad283d392a235189a3"
       url: "https://github.com/faequl96/iv_project_model.git"
     source: git
-    version: "0.1.1"
+    version: "0.1.2"
   iv_project_web_data:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.2.0+2"
-      resolved-ref: "60f9a2c2dbec951ed87306f13a4428630335e81c"
+      ref: "0.2.1"
+      resolved-ref: a53789e579b61a2a6bf3ac233fff5f0efc8335ca
       url: "https://github.com/faequl96/iv_project_web_data.git"
     source: git
-    version: "0.0.2"
+    version: "0.2.1"
   iv_project_widget_core:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.2+8"
-      resolved-ref: "7e8992056aa626c04cb5f5d31bd3f75acf92c989"
+      ref: "0.0.3"
+      resolved-ref: d073292ab26d704ba6ca4c255b3ab7a63c1f51b6
       url: "https://github.com/faequl96/iv_project_widget_core.git"
     source: git
-    version: "0.0.2"
+    version: "0.0.3"
   leak_tracker:
     dependency: transitive
     description:
@@ -744,5 +744,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.10.7 <4.0.0"
+  dart: ">=3.10.8 <4.0.0"
   flutter: ">=3.38.4"
