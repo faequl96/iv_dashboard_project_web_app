@@ -1,10 +1,10 @@
 name: iv_dashboard_project_web_app
 description: "In Vite Dashboard Project App."
 publish_to: "none"
-version: 0.1.0
+version: 0.1.1
 
 environment:
-  sdk: ^3.10.7
+  sdk: ^3.10.8
 
 dependencies:
   flutter:
