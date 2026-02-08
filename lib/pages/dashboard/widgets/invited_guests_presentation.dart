@@ -23,6 +23,7 @@ class InvitedGuestsPresentation extends StatefulWidget {
 }
 
 class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
+  final _searchController = TextEditingController();
   final _messageController = TextEditingController();
 
   final _messages = [
@@ -32,8 +33,6 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
   ];
 
   final _activeTab = ValueNotifier(0);
-
-  String? _invitationId;
 
   late final LocaleCubit _localeCubit;
   late final InvitedGuestCubit _invitedGuestCubit;
@@ -46,8 +45,7 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
     _invitedGuestCubit = context.read<InvitedGuestCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _invitationId = Uri.base.queryParameters['id'];
-      if (_invitationId != null) await _invitedGuestCubit.getsByInvitationId(_invitationId!);
+      await _invitedGuestCubit.getsByInvitationId(widget.invitationId);
 
       _messageController.text = _messages[2];
     });
@@ -55,6 +53,7 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
 
   @override
   void dispose() {
+    _searchController.dispose();
     _messageController.dispose();
 
     super.dispose();
@@ -80,84 +79,76 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                 padding: const .only(top: 48),
                 child: TabBarView(
                   children: [
-                    ListView(
-                      padding: const .only(top: 14, bottom: 8),
+                    Column(
                       children: [
-                        if (isLoading) ...[
-                          for (int i = 0; i < 4; i++) const _RSVPItemSkeleton(),
-                        ] else if (isContainsError) ...[
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height - 100,
-                            child: RetryWidget(
-                              errorMessage: _localeCubit.state.languageCode == 'id'
-                                  ? 'Oops. Gagal memuat undangan.'
-                                  : 'Oops. Failed to fetch invitation',
-                              onRetry: () async {
-                                if (_invitationId != null) await _invitedGuestCubit.getsByInvitationId(_invitationId!);
-                              },
+                        if (isLoading)
+                          Expanded(
+                            child: ListView(
+                              padding: const .only(top: 14, bottom: 8),
+                              children: [for (int i = 0; i < 4; i++) const _RSVPItemSkeleton()],
                             ),
-                          ),
-                        ] else if (inviteds.isNotEmpty) ...[
-                          for (int i = 0; i < inviteds.length; i++)
-                            _InvitedGuestItem(
-                              controller: _messageController,
+                          )
+                        else if (isContainsError)
+                          Expanded(
+                            child: ListView(
+                              padding: const .only(top: 14, bottom: 8),
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height - 100,
+                                  child: RetryWidget(
+                                    errorMessage: _localeCubit.state.languageCode == 'id'
+                                        ? 'Oops. Gagal memuat data tamu undangan.'
+                                        : 'Oops. Failed to fetch invited guest data',
+                                    onRetry: () async {
+                                      await _invitedGuestCubit.getsByInvitationId(widget.invitationId);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        else if (inviteds.isNotEmpty)
+                          Expanded(
+                            child: _InvitedGuests(
+                              items: inviteds,
                               invitationId: widget.invitationId,
                               brideName: widget.brideName,
                               groomName: widget.groomName,
-                              invitedGuest: inviteds[i],
+                              messageController: _messageController,
                             ),
-                        ] else ...[
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height - 100,
-                            child: Center(
-                              child: Text(
-                                _localeCubit.state.languageCode == 'id'
-                                    ? 'Tamu undangan belum ditambahkan'
-                                    : 'Invited guests have not been added',
-                                style: AppFonts.nunito(fontSize: 15, fontWeight: .w700),
-                              ),
+                          )
+                        else
+                          Expanded(
+                            child: ListView(
+                              padding: const .only(top: 14, bottom: 8),
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height - 100,
+                                  child: Center(
+                                    child: Text(
+                                      _localeCubit.state.languageCode == 'id'
+                                          ? 'Tamu undangan belum ditambahkan'
+                                          : 'Invited guests have not been added',
+                                      style: AppFonts.nunito(fontSize: 15, fontWeight: .w700),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
                       ],
                     ),
                     ListView(
                       padding: const .only(top: 14, bottom: 8),
                       children: [
-                        if (isLoading) ...[
-                          for (int i = 0; i < 4; i++) const _RSVPItemSkeleton(),
-                        ] else if (isContainsError) ...[
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height - 100,
-                            child: RetryWidget(
-                              errorMessage: _localeCubit.state.languageCode == 'id'
-                                  ? 'Oops. Gagal memuat undangan.'
-                                  : 'Oops. Failed to fetch invitation',
-                              onRetry: () async {
-                                if (_invitationId != null) await _invitedGuestCubit.getsByInvitationId(_invitationId!);
-                              },
-                            ),
+                        for (int i = 0; i < guests.length; i++)
+                          _InvitedGuestItem(
+                            index: i,
+                            invitationId: widget.invitationId,
+                            brideName: widget.brideName,
+                            groomName: widget.groomName,
+                            invitedGuest: guests[i],
                           ),
-                        ] else if (guests.isNotEmpty) ...[
-                          for (int i = 0; i < guests.length; i++)
-                            _InvitedGuestItem(
-                              controller: _messageController,
-                              invitationId: widget.invitationId,
-                              brideName: widget.brideName,
-                              groomName: widget.groomName,
-                              invitedGuest: guests[i],
-                            ),
-                        ] else ...[
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height - 100,
-                            child: Center(
-                              child: Text(
-                                _localeCubit.state.languageCode == 'id' ? 'Belum ada tamu guest' : 'There are no guests yet',
-                                style: AppFonts.nunito(fontSize: 15, fontWeight: .w700),
-                              ),
-                            ),
-                          ),
-                        ],
                       ],
                     ),
                   ],
@@ -168,7 +159,9 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                 color: Colors.white,
                 shape: const RoundedRectangleBorder(),
                 child: TabBar(
-                  onTap: (value) => _activeTab.value = value,
+                  onTap: (value) {
+                    if (!isLoading) _activeTab.value = value;
+                  },
                   labelColor: AppColor.primaryColor,
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   dividerHeight: 0,
@@ -178,8 +171,8 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(4), topRight: Radius.circular(4)),
                     borderSide: BorderSide(width: 6, color: AppColor.primaryColor),
                   ),
-                  tabs: const [
-                    Tab(
+                  tabs: [
+                    const Tab(
                       height: 48,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -190,7 +183,11 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                       height: 48,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Icon(Icons.circle), SizedBox(width: 8), Text('Tamu Guest')],
+                        children: [
+                          Icon(Icons.people, color: isLoading ? Colors.grey.shade400 : AppColor.primaryColor),
+                          const SizedBox(width: 8),
+                          Text('Tamu Guest', style: TextStyle(color: isLoading ? Colors.grey.shade400 : null)),
+                        ],
                       ),
                     ),
                   ],
@@ -198,15 +195,19 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
               ),
               ValueListenableBuilder(
                 valueListenable: _activeTab,
-                builder: (_, value, _) => Positioned(
-                  bottom: 20,
-                  child: Row(
-                    children: [
-                      if (value == 0) ...[const AddInvitedGuestPortal(), const SizedBox(width: 10)],
-                      EditMessagePortal(controller: _messageController, messages: _messages),
-                    ],
-                  ),
-                ),
+                builder: (_, value, _) {
+                  if (value != 0) return const SizedBox.shrink();
+                  return Positioned(
+                    bottom: 20,
+                    child: Row(
+                      children: [
+                        const AddInvitedGuestPortal(),
+                        const SizedBox(width: 10),
+                        EditMessagePortal(controller: _messageController, messages: _messages),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -216,20 +217,133 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
   }
 }
 
+class _InvitedGuests extends StatefulWidget {
+  const _InvitedGuests({
+    required this.items,
+    required this.invitationId,
+    required this.brideName,
+    required this.groomName,
+    required this.messageController,
+  });
+
+  final List<InvitedGuestResponse> items;
+  final String invitationId;
+  final String brideName;
+  final String groomName;
+  final TextEditingController messageController;
+
+  @override
+  State<_InvitedGuests> createState() => _InvitedGuestsState();
+}
+
+class _InvitedGuestsState extends State<_InvitedGuests> {
+  final _searchController = TextEditingController();
+
+  bool _isSearch = false;
+
+  final List<InvitedGuestResponse> invitedGuests = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    invitedGuests.addAll(widget.items);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const .only(top: 18, bottom: 8),
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
+          child: GeneralTextField(
+            controller: _searchController,
+            height: 46,
+            autofocus: true,
+            decoration: FieldDecoration(
+              hintText: 'Cari : WhatsApp, Nama, Instansi',
+              filled: true,
+              fillColor: Colors.white,
+              contentHorizontalPadding: 20,
+              suffixIcons: () {
+                if (_searchController.text.isEmpty) return [];
+                return [SharedPersonalize.suffixClear(() => _searchController.clear())];
+              },
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.black12),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.black12),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.black12),
+                borderRadius: BorderRadius.circular(50),
+              ),
+            ),
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                _isSearch = true;
+                invitedGuests.clear();
+                final keyword = value.toLowerCase();
+                bool isMatch(InvitedGuestResponse e) {
+                  final isPhoneMatch = (e.phone ?? '').toLowerCase().contains(keyword);
+                  final isNicknameMatch = e.nickname.toLowerCase().contains(keyword);
+                  final isNameInstanceMatch = e.nameInstance.toLowerCase().contains(keyword);
+                  return isPhoneMatch || isNicknameMatch || isNameInstanceMatch;
+                }
+
+                final matches = widget.items.where((e) => isMatch(e));
+                invitedGuests.addAll(matches);
+              } else {
+                _isSearch = false;
+                invitedGuests.clear();
+                invitedGuests.addAll(widget.items);
+              }
+
+              setState(() {});
+            },
+          ),
+        ),
+        for (int i = 0; i < invitedGuests.length; i++)
+          _InvitedGuestItem(
+            index: _isSearch ? null : i,
+            controller: widget.messageController,
+            invitationId: widget.invitationId,
+            brideName: widget.brideName,
+            groomName: widget.groomName,
+            invitedGuest: invitedGuests[i],
+          ),
+      ],
+    );
+  }
+}
+
 class _InvitedGuestItem extends StatelessWidget {
   const _InvitedGuestItem({
+    this.index,
     required this.invitedGuest,
     required this.invitationId,
     required this.brideName,
     required this.groomName,
-    required this.controller,
+    this.controller,
   });
 
-  final TextEditingController controller;
+  final int? index;
+  final InvitedGuestResponse invitedGuest;
   final String invitationId;
   final String brideName;
   final String groomName;
-  final InvitedGuestResponse invitedGuest;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -263,57 +377,60 @@ class _InvitedGuestItem extends StatelessWidget {
                       child: Padding(
                         padding: const .only(left: 14, top: 4, bottom: 4),
                         child: Text(
-                          '${invitedGuest.nickname} - ${invitedGuest.nameInstance.split('_').last.replaceAll('-', ' ')}',
+                          '${index != null ? "${index! + 1}. " : ""}${invitedGuest.nameInstance == 'Guest' ? invitedGuest.nickname : invitedGuest.nameInstance.replaceAll('-', ' ').replaceAll('_', ' - ')}',
                           style: AppFonts.nunito(fontWeight: .w700, color: Colors.white),
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const .only(right: 8),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: ColorConverter.lighten(AppColor.primaryColor, 75),
-                        borderRadius: .circular(20),
-                      ),
-                      child: Padding(
-                        padding: const .symmetric(vertical: 3, horizontal: 4),
-                        child: GeneralEffectsButton(
-                          onTap: () async {
-                            final phone = invitedGuest.phone;
-                            if (phone == null) return;
-                            final phoneNumber = phone[0] == '0' ? phone.replaceFirst('0', '62') : phone;
-                            final message = controller.text
-                                .replaceAll('{nama_tamu}', invitedGuest.nickname)
-                                .replaceAll(
-                                  '{link_undangan}',
-                                  'https://iv-project-web-app.vercel.app/?id=$invitationId&to=${invitedGuest.id}',
-                                )
-                                .replaceAll('{mempelai_wanita}', brideName)
-                                .replaceAll('{mempelai_pria}', groomName);
-                            final url = 'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
+                  if (controller != null)
+                    Padding(
+                      padding: const .only(right: 8),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: ColorConverter.lighten(AppColor.primaryColor, 75),
+                          borderRadius: .circular(20),
+                        ),
+                        child: Padding(
+                          padding: const .symmetric(vertical: 3, horizontal: 4),
+                          child: GeneralEffectsButton(
+                            onTap: () async {
+                              final phone = invitedGuest.phone;
+                              if (phone == null) return;
+                              final phoneNumber = phone[0] == '0' ? phone.replaceFirst('0', '62') : phone;
+                              final message = controller!.text
+                                  .replaceAll('{nama_tamu}', invitedGuest.nickname)
+                                  .replaceAll(
+                                    '{link_undangan}',
+                                    'https://iv-project-web-app.vercel.app/?id=$invitationId&to=${invitedGuest.id}',
+                                  )
+                                  .replaceAll('{mempelai_wanita}', brideName)
+                                  .replaceAll('{mempelai_pria}', groomName);
+                              final url = 'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}';
 
-                            if (await canLaunchUrl(.parse(url))) {
-                              await launchUrl(.parse(url), mode: .externalApplication);
-                            } else {
-                              GeneralDialog.showValidateStateError(
-                                localeCubit.state.languageCode == 'id' ? 'Tidak dapat membuka WhatsApp' : 'Can\'t open WhatsApp',
-                                durationInSeconds: 5,
-                              );
-                            }
-                          },
-                          padding: const .symmetric(horizontal: 20, vertical: 5),
-                          color: AppColor.primaryColor,
-                          splashColor: Colors.white,
-                          borderRadius: .circular(30),
-                          child: Text(
-                            localeCubit.state.languageCode == 'id' ? 'Kirim' : 'Send',
-                            style: AppFonts.nunito(color: Colors.white, fontWeight: .w700),
+                              if (await canLaunchUrl(.parse(url))) {
+                                await launchUrl(.parse(url), mode: .externalApplication);
+                              } else {
+                                GeneralDialog.showValidateStateError(
+                                  localeCubit.state.languageCode == 'id'
+                                      ? 'Tidak dapat membuka WhatsApp'
+                                      : 'Can\'t open WhatsApp',
+                                  durationInSeconds: 5,
+                                );
+                              }
+                            },
+                            padding: const .symmetric(horizontal: 20, vertical: 5),
+                            color: AppColor.primaryColor,
+                            splashColor: Colors.white,
+                            borderRadius: .circular(30),
+                            child: Text(
+                              localeCubit.state.languageCode == 'id' ? 'Kirim' : 'Send',
+                              style: AppFonts.nunito(color: Colors.white, fontWeight: .w700),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -353,18 +470,20 @@ class _InvitedGuestItem extends StatelessWidget {
                 Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :', style: AppFonts.nunito()),
                 const Spacer(),
                 if (invitedGuest.attendance != null)
-                  Text(
-                    invitedGuest.attendance! == true
-                        ? localeCubit.state.languageCode == 'id'
-                              ? 'Hadir'
-                              : 'Present'
-                        : localeCubit.state.languageCode == 'id'
-                        ? 'Tidak Hadir'
-                        : 'Not Present',
-                    style: AppFonts.nunito(),
-                  )
+                  invitedGuest.attendance! == true
+                      ? Text(
+                          localeCubit.state.languageCode == 'id' ? 'Hadir' : 'Present',
+                          style: AppFonts.nunito(color: Colors.greenAccent.shade700, fontWeight: FontWeight.bold),
+                        )
+                      : Text(
+                          localeCubit.state.languageCode == 'id' ? 'Tidak Hadir' : 'Not Present',
+                          style: AppFonts.nunito(color: Colors.red, fontWeight: FontWeight.bold),
+                        )
                 else
-                  Text(invitedGuest.possiblePresence ?? '-', style: AppFonts.nunito()),
+                  Text(
+                    invitedGuest.possiblePresence ?? '-',
+                    style: AppFonts.nunito(color: Colors.orange, fontWeight: FontWeight.bold),
+                  ),
               ],
             ),
           ),
