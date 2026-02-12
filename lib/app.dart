@@ -10,7 +10,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [...AppBlocProvider.dataProviders, ...AppBlocProvider.globalProviders],
+      providers: [...AppBlocProvider.dataProviders, ...AppBlocProvider.uiAndCacheProviders, ...AppBlocProvider.globalProviders],
       child: const _App(),
     );
   }
