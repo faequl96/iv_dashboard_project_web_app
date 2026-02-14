@@ -16,6 +16,7 @@ class AddInvitedGuestPortal extends StatelessWidget {
           dismissible: false,
           enableDrag: false,
           header: BottomSheetHeader(
+            title: HeaderTitle(icon: Icons.add, iconColor: Colors.green.shade600, title: 'Tambah Tamu Undangan'),
             action: HeaderAction(
               actionIcon: Icons.close_rounded,
               iconColor: Colors.grey.shade600,
@@ -24,7 +25,8 @@ class AddInvitedGuestPortal extends StatelessWidget {
           ),
           decoration: BottomSheetDecoration(
             // height: MediaQuery.of(context).size.height - 20,
-            color: ColorConverter.lighten(AppColor.primaryColor, 96),
+            color: Colors.white,
+            backgroundContentColor: ColorConverter.lighten(AppColor.primaryColor, 96),
             borderRadius: const .only(topLeft: .circular(20), topRight: .circular(20)),
           ),
           contentBuilder: (_) => const AddInvitedGuestContent(),

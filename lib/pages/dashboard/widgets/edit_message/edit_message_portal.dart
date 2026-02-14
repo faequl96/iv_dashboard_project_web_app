@@ -17,8 +17,7 @@ class EditMessagePortal extends StatelessWidget {
           context,
           barrierColor: Colors.grey.shade700.withValues(alpha: .5),
           header: BottomSheetHeader(
-            useHandleBar: true,
-            handleColor: Colors.grey.shade500,
+            title: const HeaderTitle.handleBar(),
             action: HeaderAction(
               actionIcon: Icons.close_rounded,
               iconColor: Colors.grey.shade600,
@@ -37,9 +36,22 @@ class EditMessagePortal extends StatelessWidget {
       splashColor: Colors.white,
       borderRadius: .circular(30),
       useInitialElevation: true,
-      child: Text(
-        'Sesuaikan Pesan',
-        style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w700),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Column(
+            mainAxisAlignment: .center,
+            children: [
+              SizedBox(height: 3),
+              Icon(Icons.message, size: 24, color: Colors.white),
+            ],
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'Template Pesan',
+            style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w700),
+          ),
+        ],
       ),
     );
   }

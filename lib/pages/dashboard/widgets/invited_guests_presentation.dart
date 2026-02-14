@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/add_invited_guest/add_invited_guest_portal.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/edit_invited_guest/edit_invited_guest_portal.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/edit_message/edit_message_portal.dart';
-import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/remove_invited_guest/remove_invited_guest_portal.dart';
 import 'package:iv_project_core/iv_project_core.dart';
 import 'package:iv_project_model/iv_project_model.dart';
 import 'package:iv_project_web_data/iv_project_web_data.dart';
@@ -208,8 +207,6 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                         children: [
                           EditMessagePortal(controller: _messageController, messages: _messages),
                           const Spacer(),
-                          const RemoveInvitedGuestPortal(),
-                          const SizedBox(width: 10),
                           const EditInvitedGuestPortal(),
                           const SizedBox(width: 10),
                           const AddInvitedGuestPortal(),
@@ -307,7 +304,7 @@ class _InvitedGuestsState extends State<_InvitedGuests> {
                 final keyword = value.toLowerCase();
                 bool isMatch(InvitedGuestResponse e) {
                   final isPhoneMatch = (e.phone ?? '').toLowerCase().contains(keyword);
-                  final isNicknameMatch = e.nickname.toLowerCase().contains(keyword);
+                  final isNicknameMatch = e.name.toLowerCase().contains(keyword);
                   final isNameInstanceMatch = e.nameInstance.toLowerCase().contains(keyword);
                   return isPhoneMatch || isNicknameMatch || isNameInstanceMatch;
                 }
@@ -409,7 +406,7 @@ class _InvitedGuestItem extends StatelessWidget {
                               if (phone == null) return;
                               final phoneNumber = phone[0] == '0' ? phone.replaceFirst('0', '62') : phone;
                               final message = controller!.text
-                                  .replaceAll('{nama_tamu}', invitedGuest.nickname)
+                                  .replaceAll('{nama_tamu}', invitedGuest.name)
                                   .replaceAll(
                                     '{link_undangan}',
                                     'https://iv-project-web-app.vercel.app/?id=$invitationId&to=${invitedGuest.id}',
@@ -464,12 +461,7 @@ class _InvitedGuestItem extends StatelessWidget {
                 children: [
                   Text('Souvenir :', style: AppFonts.nunito()),
                   const Spacer(),
-                  Text(
-                    localeCubit.state.languageCode == 'id'
-                        ? 'Tipe - ${invitedGuest.souvenir!}'
-                        : 'Type - ${invitedGuest.souvenir!}',
-                    style: AppFonts.nunito(),
-                  ),
+                  Text(invitedGuest.souvenir!, style: AppFonts.nunito()),
                 ],
               ),
             ),
@@ -494,6 +486,22 @@ class _InvitedGuestItem extends StatelessWidget {
                     invitedGuest.possiblePresence ?? '-',
                     style: AppFonts.nunito(color: Colors.orange, fontWeight: FontWeight.bold),
                   ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const .symmetric(horizontal: 14),
+            child: Row(
+              children: [
+                Text('Nominal :', style: AppFonts.nunito()),
+                const Spacer(),
+                if (invitedGuest.nominal != null)
+                  Text(
+                    Currency.format(invitedGuest.nominal!.toDouble(), locale: 'id_ID', symbol: 'Rp. '),
+                    style: AppFonts.nunito(),
+                  )
+                else
+                  Text('-', style: AppFonts.nunito()),
               ],
             ),
           ),

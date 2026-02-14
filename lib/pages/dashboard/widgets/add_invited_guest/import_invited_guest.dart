@@ -6,12 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_import_model.dart';
 import 'package:iv_project_core/iv_project_core.dart';
+import 'package:iv_project_web_data/iv_project_web_data.dart';
 import 'package:iv_project_widget_core/iv_project_widget_core.dart';
 import 'package:quick_dev_sdk/quick_dev_sdk.dart';
 
 class ImportInvitedGuest extends StatefulWidget {
-  const ImportInvitedGuest({super.key, required this.onCompleted});
+  const ImportInvitedGuest({super.key, required this.invitationId, required this.onCompleted});
 
+  final String invitationId;
   final Function(List<InvitedGuestImportModel> values) onCompleted;
 
   @override
@@ -20,6 +22,7 @@ class ImportInvitedGuest extends StatefulWidget {
 
 class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
   late final LocaleCubit _localeCubit;
+  late final InvitedGuestCubit _invitedGuestCubit;
 
   Future<void> _downloadExcelAsset() async {
     final data = await rootBundle.load('assets/templates/formulir_tamu_undangan.xlsx');
@@ -59,26 +62,43 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
 
         final name = row[0]?.value?.toString();
         final whatsapp = row[1]?.value?.toString();
-        final instance = row[2]?.value?.toString() ?? '';
-        final souvenir = row[3]?.value?.toString();
+        final instance = row[2]?.value?.toString();
 
-        if (name == null || whatsapp == null) {
+        if (name == null || whatsapp == null || instance == null) {
           isBreaked = true;
-          GeneralDialog.showValidateStateError('Semua kolom "Nama" dan "WhatsApp" wajib diisi', durationInSeconds: 5);
+          GeneralDialog.showValidateStateError(
+            'Semua kolom "Nama", "WhatsApp", dan "Keluarga/Teman Di" wajib diisi',
+            durationInSeconds: 5,
+          );
           break;
         }
 
-        if (name.contains('cth') || instance.contains('cth') || whatsapp.contains('cth') || (souvenir ?? '').contains('cth')) {
+        if (name.contains('cth') || whatsapp.contains('cth') || instance.contains('cth')) {
           continue;
         }
 
-        invitedGuests.add(InvitedGuestImportModel(name: name, phone: whatsapp, instance: instance, souvenir: souvenir));
+        invitedGuests.add(InvitedGuestImportModel(name: name, phone: whatsapp, instance: instance));
       }
 
       if (isBreaked) {
         widget.onCompleted([]);
       } else {
-        widget.onCompleted(invitedGuests);
+        final guestResponseIds = (_invitedGuestCubit.state.invitedGuests ?? [])
+            .where((e) => !e.nameInstance.contains('Guest'))
+            .map((e) => e.uniqueId)
+            .toList();
+        final guestIds = <String>[];
+        for (final guestId in guestResponseIds) {
+          if (guestId != null) guestIds.add(guestId.toLowerCase());
+        }
+
+        final finalInvitedGuests = invitedGuests
+            .where(
+              (e) => !guestIds.contains('${e.name.toLowerCase()}_${e.phone.toLowerCase()}_${widget.invitationId.toLowerCase()}'),
+            )
+            .toList();
+
+        widget.onCompleted(finalInvitedGuests);
       }
     } catch (e) {
       GeneralDialog.showValidateStateError('$e', durationInSeconds: 5);
@@ -90,6 +110,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
     super.initState();
 
     _localeCubit = context.read<LocaleCubit>();
+    _invitedGuestCubit = context.read<InvitedGuestCubit>();
   }
 
   @override
@@ -97,6 +118,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
     return Column(
       mainAxisSize: .min,
       children: [
+        const SizedBox(height: 16),
         Padding(
           padding: const .symmetric(horizontal: 16),
           child: CardContainer(

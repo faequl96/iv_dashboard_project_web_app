@@ -210,8 +210,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   barrierColor: Colors.grey.shade700.withValues(alpha: .5),
                   dismissible: false,
                   header: BottomSheetHeader(
-                    useHandleBar: true,
-                    handleColor: Colors.grey.shade500,
+                    title: const HeaderTitle.handleBar(),
                     action: HeaderAction(
                       actionIcon: Icons.close_rounded,
                       iconColor: Colors.grey.shade600,
@@ -240,7 +239,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               style: AppFonts.nunito(fontSize: 15),
                             ),
                             const Spacer(),
-                            Text(invitedGuest.nickname, style: AppFonts.nunito(fontSize: 15, fontWeight: .w500)),
+                            Text(invitedGuest.name, style: AppFonts.nunito(fontSize: 15, fontWeight: .w500)),
                           ],
                         ),
                         const SizedBox(height: 4),
