@@ -242,7 +242,19 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
             onTap: () async {
               final supported = ContactPicker.isSupported();
               if (supported) {
-                final results = await ContactPicker.picks(allowMultiple: true);
+                final results = await ContactPicker.picks(
+                  allowMultiple: true,
+                  onPrint: (value) {
+                    if (context.mounted) {
+                      ShowModal.bottomSheet(
+                        context,
+                        contentBuilder: (_) {
+                          return Text(value);
+                        },
+                      );
+                    }
+                  },
+                );
                 if (context.mounted) {
                   ShowModal.bottomSheet(
                     context,
