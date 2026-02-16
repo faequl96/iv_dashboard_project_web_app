@@ -272,7 +272,6 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                       children: [
                         GeneralEffectsButton(
                           onTap: _importFromContact,
-                          width: .maxFinite,
                           padding: const .symmetric(vertical: 12, horizontal: 24),
                           color: AppColor.primaryColor,
                           splashColor: Colors.white,
