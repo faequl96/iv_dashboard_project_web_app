@@ -111,12 +111,12 @@ class _DashboardPageState extends State<DashboardPage> {
             const Spacer(),
             Text(
               _localeCubit.state.languageCode == 'id' ? 'Undangan tidak ditemukan' : 'Invitation not found.',
-              style: AppFonts.nunito(fontSize: 18, fontWeight: .w800),
+              style: const TextStyle(fontSize: 18, fontWeight: .w800),
             ),
             const Spacer(),
             Text(
               _localeCubit.state.languageCode == 'id' ? 'Ingin membuat undanganmu sendiri?' : 'Want to make your own invitation?',
-              style: AppFonts.nunito(fontSize: 16, fontWeight: .w500),
+              style: const TextStyle(fontSize: 16, fontWeight: .w500),
             ),
             const SizedBox(height: 14),
             Row(
@@ -124,12 +124,12 @@ class _DashboardPageState extends State<DashboardPage> {
               children: [
                 Text(
                   _localeCubit.state.languageCode == 'id' ? 'Unduh Aplikasi' : 'Download',
-                  style: AppFonts.nunito(fontSize: 16, fontWeight: .w800),
+                  style: const TextStyle(fontSize: 16, fontWeight: .w800),
                 ),
                 const SizedBox(width: 6),
                 Image.asset('assets/logos/in_vite_logo.png', height: 20, fit: .fitHeight),
                 const SizedBox(width: 6),
-                if (_localeCubit.state.languageCode == 'en') Text('App', style: AppFonts.nunito(fontSize: 16, fontWeight: .w800)),
+                if (_localeCubit.state.languageCode == 'en') const Text('App', style: TextStyle(fontSize: 16, fontWeight: .w800)),
               ],
             ),
             GeneralEffectsButton(
@@ -145,152 +145,143 @@ class _DashboardPageState extends State<DashboardPage> {
 
     final invitationData = _invitation!.invitationData;
 
-    return Theme(
-      data: ThemeData(
-        inputDecorationTheme: InputDecorationTheme(floatingLabelStyle: AppFonts.nunito(color: AppColor.primaryColor)),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: AppColor.primaryColor,
-          selectionHandleColor: AppColor.primaryColor,
-        ),
-      ),
-      child: Stack(
-        alignment: .topCenter,
-        children: [
-          SizedBox(
-            height: size.height,
-            width: size.width,
-            child: ColoredBox(
-              color: ColorConverter.lighten(AppColor.primaryColor, 94),
-              child: Column(
-                children: [
-                  const SizedBox(height: kToolbarHeight),
-                  Expanded(
-                    child: InvitedGuestsPresentation(
-                      invitationId: _invitationId!,
-                      brideName: _invitation!.invitationData.bride.nickname,
-                      groomName: _invitation!.invitationData.groom.nickname,
-                    ),
+    return Stack(
+      alignment: .topCenter,
+      children: [
+        SizedBox(
+          height: size.height,
+          width: size.width,
+          child: ColoredBox(
+            color: ColorConverter.lighten(AppColor.primaryColor, 94),
+            child: Column(
+              children: [
+                const SizedBox(height: kToolbarHeight),
+                Expanded(
+                  child: InvitedGuestsPresentation(
+                    invitationId: _invitationId!,
+                    brideName: _invitation!.invitationData.bride.nickname,
+                    groomName: _invitation!.invitationData.groom.nickname,
                   ),
-                ],
-              ),
-            ),
-          ),
-          GeneralTitleAppBar(
-            title: LayoutBuilder(
-              builder: (_, constraints) => RunningText(
-                text:
-                    '\t\t${_localeCubit.state.languageCode == 'id' ? 'Dashboard Tamu Undangan Pernikahan' : 'Wedding Invited Guest Dashboard'} - ${invitationData.bride.nickname} & ${invitationData.groom.nickname}',
-                textStyle: AppFonts.nunito(fontSize: 16, fontWeight: .w700, color: Colors.white),
-                constraints: constraints,
-              ),
-            ),
-            leftAction: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const .only(topRight: .circular(20), bottomRight: .circular(20)),
-                border: Border(
-                  top: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
-                  right: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
-                  bottom: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
                 ),
-              ),
-              child: Padding(
-                padding: const .only(left: 14, right: 10, top: 7, bottom: 7),
-                child: Image.asset('assets/logos/in_vite_logo.png', height: 24, fit: .fitHeight),
-              ),
-            ),
-            rightAction: ScanQrPortal(
-              onDetectCompleted: () {
-                final invitedGuest = _invitedGuestCubit.state.invitedGuest;
-                if (invitedGuest == null) return;
-                final souvenir = invitedGuest.souvenir;
-
-                ShowModal.bottomSheet(
-                  context,
-                  barrierColor: Colors.grey.shade700.withValues(alpha: .5),
-                  dismissible: false,
-                  header: BottomSheetHeader(
-                    title: const HeaderTitle.handleBar(),
-                    action: HeaderAction(
-                      actionIcon: Icons.close_rounded,
-                      iconColor: Colors.grey.shade600,
-                      onTap: () => NavigationService.pop(),
-                    ),
-                  ),
-                  decoration: BottomSheetDecoration(
-                    color: ColorConverter.lighten(AppColor.primaryColor, 94),
-                    borderRadius: const .only(topLeft: .circular(20), topRight: .circular(20)),
-                  ),
-                  contentBuilder: (_) => Padding(
-                    padding: const .symmetric(horizontal: 16),
-                    child: Column(
-                      mainAxisSize: .min,
-                      children: [
-                        const SizedBox(height: 8),
-                        Text(
-                          _localeCubit.state.languageCode == 'id' ? 'Detail Tamu Undangan' : 'Invited Guest Detail',
-                          style: AppFonts.nunito(fontWeight: .w800, fontSize: 16),
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Text(
-                              _localeCubit.state.languageCode == 'id' ? 'Nama :' : 'Name :',
-                              style: AppFonts.nunito(fontSize: 15),
-                            ),
-                            const Spacer(),
-                            Text(invitedGuest.name, style: AppFonts.nunito(fontSize: 15, fontWeight: .w500)),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Text(
-                              _localeCubit.state.languageCode == 'id' ? 'Instansi/Dari :' : 'Instance/From :',
-                              style: AppFonts.nunito(fontSize: 15),
-                            ),
-                            const Spacer(),
-                            Text(
-                              invitedGuest.nameInstance.split('_').last.replaceAll('-', ' '),
-                              style: AppFonts.nunito(fontSize: 15, fontWeight: .w500),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        if (invitedGuest.phone != null) ...[
-                          Row(
-                            children: [
-                              Text('WhatsApp :', style: AppFonts.nunito(fontSize: 15)),
-                              const Spacer(),
-                              Text(invitedGuest.phone!, style: AppFonts.nunito(fontSize: 15, fontWeight: .w500)),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                        ],
-                        Row(
-                          children: [
-                            Text('Souvenir :', style: AppFonts.nunito(fontSize: 15)),
-                            const Spacer(),
-                            Text(
-                              souvenir == null
-                                  ? '-'
-                                  : _localeCubit.state.languageCode == 'id'
-                                  ? 'Tipe - $souvenir'
-                                  : 'Type - $souvenir',
-                              style: AppFonts.nunito(fontSize: 15, fontWeight: .w500),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 60),
-                      ],
-                    ),
-                  ),
-                );
-              },
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+        GeneralTitleAppBar(
+          title: LayoutBuilder(
+            builder: (_, constraints) => RunningText(
+              text:
+                  '\t\t${_localeCubit.state.languageCode == 'id' ? 'Dashboard Tamu Undangan Pernikahan' : 'Wedding Invited Guest Dashboard'} - ${invitationData.bride.nickname} & ${invitationData.groom.nickname}',
+              textStyle: const TextStyle(fontSize: 16, fontWeight: .w700, color: Colors.white),
+              constraints: constraints,
+            ),
+          ),
+          leftAction: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const .only(topRight: .circular(20), bottomRight: .circular(20)),
+              border: Border(
+                top: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
+                right: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
+                bottom: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
+              ),
+            ),
+            child: Padding(
+              padding: const .only(left: 14, right: 10, top: 7, bottom: 7),
+              child: Image.asset('assets/logos/in_vite_logo.png', height: 24, fit: .fitHeight),
+            ),
+          ),
+          rightAction: ScanQrPortal(
+            onDetectCompleted: () {
+              final invitedGuest = _invitedGuestCubit.state.invitedGuest;
+              if (invitedGuest == null) return;
+              final souvenir = invitedGuest.souvenir;
+
+              ShowModal.bottomSheet(
+                context,
+                barrierColor: Colors.grey.shade700.withValues(alpha: .5),
+                dismissible: false,
+                header: BottomSheetHeader(
+                  title: const HeaderTitle.handleBar(),
+                  action: HeaderAction(
+                    actionIcon: Icons.close_rounded,
+                    iconColor: Colors.grey.shade600,
+                    onTap: () => NavigationService.pop(),
+                  ),
+                ),
+                decoration: BottomSheetDecoration(
+                  color: ColorConverter.lighten(AppColor.primaryColor, 94),
+                  borderRadius: const .only(topLeft: .circular(20), topRight: .circular(20)),
+                ),
+                contentBuilder: (_) => Padding(
+                  padding: const .symmetric(horizontal: 16),
+                  child: Column(
+                    mainAxisSize: .min,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(
+                        _localeCubit.state.languageCode == 'id' ? 'Detail Tamu Undangan' : 'Invited Guest Detail',
+                        style: const TextStyle(fontWeight: .w800, fontSize: 16),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text(
+                            _localeCubit.state.languageCode == 'id' ? 'Nama :' : 'Name :',
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                          const Spacer(),
+                          Text(invitedGuest.name, style: const TextStyle(fontSize: 15, fontWeight: .w500)),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Text(
+                            _localeCubit.state.languageCode == 'id' ? 'Instansi/Dari :' : 'Instance/From :',
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                          const Spacer(),
+                          Text(
+                            invitedGuest.nameInstance.split('_').last.replaceAll('-', ' '),
+                            style: const TextStyle(fontSize: 15, fontWeight: .w500),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      if (invitedGuest.phone != null) ...[
+                        Row(
+                          children: [
+                            const Text('WhatsApp :', style: TextStyle(fontSize: 15)),
+                            const Spacer(),
+                            Text(invitedGuest.phone!, style: const TextStyle(fontSize: 15, fontWeight: .w500)),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                      ],
+                      Row(
+                        children: [
+                          const Text('Souvenir :', style: TextStyle(fontSize: 15)),
+                          const Spacer(),
+                          Text(
+                            souvenir == null
+                                ? '-'
+                                : _localeCubit.state.languageCode == 'id'
+                                ? 'Tipe - $souvenir'
+                                : 'Type - $souvenir',
+                            style: const TextStyle(fontSize: 15, fontWeight: .w500),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 60),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

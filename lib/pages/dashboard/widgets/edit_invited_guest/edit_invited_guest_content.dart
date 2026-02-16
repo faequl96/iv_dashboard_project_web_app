@@ -306,7 +306,7 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
                         ],
                         Text(
                           _localeCubit.state.languageCode == 'id' ? 'Update Tamu Undangan' : 'Update Invited Guests',
-                          style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                          style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
                         ),
                       ],
                     ),

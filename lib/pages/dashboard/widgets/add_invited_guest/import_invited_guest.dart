@@ -167,7 +167,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                     _localeCubit.state.languageCode == 'id'
                         ? 'Import Tamu Undangan dari Excel'
                         : 'Import Invited Guest from Excel',
-                    style: AppFonts.nunito(color: AppColor.primaryColor, fontSize: 17, fontWeight: .w800, height: 1.2),
+                    style: const TextStyle(color: AppColor.primaryColor, fontSize: 17, fontWeight: .w800, height: 1.2),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
@@ -175,7 +175,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                     _localeCubit.state.languageCode == 'id'
                         ? 'Silahkan unduh dan isi Formulir tamu undangan dibawah ini.'
                         : 'Please download and fill out the guest invitation Form below.',
-                    style: AppFonts.nunito(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
                     textAlign: .center,
                   ),
                   const SizedBox(height: 8),
@@ -183,7 +183,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                     _localeCubit.state.languageCode == 'id'
                         ? 'Jika telah mengisi, silahkan import Formulir tersebut.'
                         : 'If you have filled it in, please import the Form.',
-                    style: AppFonts.nunito(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
                     textAlign: .center,
                   ),
                   const SizedBox(height: 14),
@@ -205,7 +205,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                             children: [
                               Text(
                                 _localeCubit.state.languageCode == 'id' ? 'Unduh Form' : 'Download Form',
-                                style: AppFonts.nunito(color: AppColor.primaryColor, fontSize: 15, fontWeight: .w800),
+                                style: const TextStyle(color: AppColor.primaryColor, fontSize: 15, fontWeight: .w800),
                               ),
                               const SizedBox(width: 6),
                               const Icon(Icons.download, color: AppColor.primaryColor),
@@ -226,7 +226,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                           child: Center(
                             child: Text(
                               _localeCubit.state.languageCode == 'id' ? 'Import Form' : 'Import Form',
-                              style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                              style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
                             ),
                           ),
                         ),
@@ -256,7 +256,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                       _localeCubit.state.languageCode == 'id'
                           ? 'Import Tamu Undangan dari Kontak'
                           : 'Import Invited Guest from Contact',
-                      style: AppFonts.nunito(color: AppColor.primaryColor, fontSize: 17, fontWeight: .w800, height: 1.2),
+                      style: const TextStyle(color: AppColor.primaryColor, fontSize: 17, fontWeight: .w800, height: 1.2),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
@@ -264,7 +264,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                       _localeCubit.state.languageCode == 'id'
                           ? 'Silakan klik tombol di bawah ini. Daftar kontak Anda akan muncul. Kemudian, pilihlah kontak yang ingin diimpor. Setelah itu, klik tombol Selesai.'
                           : 'Please click the button below. Your contact list will appear. Then, select the contacts you wish to import. Then, click the Done button.',
-                      style: AppFonts.nunito(fontSize: 15),
+                      style: const TextStyle(fontSize: 15),
                       textAlign: .center,
                     ),
                     const SizedBox(height: 14),
@@ -283,7 +283,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                             useInitialElevation: true,
                             child: Text(
                               _localeCubit.state.languageCode == 'id' ? 'Import Kontak' : 'Import Contact',
-                              style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                              style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
                             ),
                           ),
                         ),
@@ -314,7 +314,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
             children: [
               Text(
                 _localeCubit.state.languageCode == 'id' ? 'Lewati Import' : 'Lewati Import',
-                style: AppFonts.nunito(color: Colors.orange, fontSize: 15, fontWeight: .w800),
+                style: const TextStyle(color: Colors.orange, fontSize: 15, fontWeight: .w800),
               ),
               const SizedBox(width: 10),
               const Icon(Icons.input_rounded, color: Colors.orange),

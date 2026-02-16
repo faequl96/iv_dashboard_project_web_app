@@ -130,7 +130,7 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                                       _localeCubit.state.languageCode == 'id'
                                           ? 'Tamu undangan belum ditambahkan'
                                           : 'Invited guests have not been added',
-                                      style: AppFonts.nunito(fontSize: 15, fontWeight: .w700),
+                                      style: const TextStyle(fontSize: 15, fontWeight: .w700),
                                     ),
                                   ),
                                 ),
@@ -386,7 +386,7 @@ class _InvitedGuestItem extends StatelessWidget {
                         padding: const .only(left: 14, top: 4, bottom: 4),
                         child: Text(
                           '${index != null ? "${index! + 1}. " : ""}${invitedGuest.nameInstance == 'Guest' ? invitedGuest.nickname : invitedGuest.nameInstance.replaceAll('-', ' ').replaceAll('_', ' - ')}',
-                          style: AppFonts.nunito(fontWeight: .w700, color: Colors.white),
+                          style: const TextStyle(fontWeight: .w700, color: Colors.white),
                         ),
                       ),
                     ),
@@ -433,7 +433,7 @@ class _InvitedGuestItem extends StatelessWidget {
                             borderRadius: .circular(30),
                             child: Text(
                               localeCubit.state.languageCode == 'id' ? 'Kirim' : 'Send',
-                              style: AppFonts.nunito(color: Colors.white, fontWeight: .w700),
+                              style: const TextStyle(color: Colors.white, fontWeight: .w700),
                             ),
                           ),
                         ),
@@ -449,9 +449,9 @@ class _InvitedGuestItem extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Text('WhatsApp :', style: AppFonts.nunito()),
+                  const Text('WhatsApp :', style: TextStyle()),
                   const Spacer(),
-                  Text(invitedGuest.phone!, style: AppFonts.nunito()),
+                  Text(invitedGuest.phone!, style: const TextStyle()),
                 ],
               ),
             ),
@@ -460,9 +460,9 @@ class _InvitedGuestItem extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Text('Souvenir :', style: AppFonts.nunito()),
+                  const Text('Souvenir :', style: TextStyle()),
                   const Spacer(),
-                  Text(invitedGuest.souvenir!, style: AppFonts.nunito()),
+                  Text(invitedGuest.souvenir!, style: const TextStyle()),
                 ],
               ),
             ),
@@ -470,22 +470,22 @@ class _InvitedGuestItem extends StatelessWidget {
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :', style: AppFonts.nunito()),
+                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :', style: const TextStyle()),
                 const Spacer(),
                 if (invitedGuest.attendance != null)
                   invitedGuest.attendance! == true
                       ? Text(
                           localeCubit.state.languageCode == 'id' ? 'Hadir' : 'Present',
-                          style: AppFonts.nunito(color: Colors.greenAccent.shade700, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.greenAccent.shade700, fontWeight: FontWeight.bold),
                         )
                       : Text(
                           localeCubit.state.languageCode == 'id' ? 'Tidak Hadir' : 'Not Present',
-                          style: AppFonts.nunito(color: Colors.red, fontWeight: FontWeight.bold),
+                          style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                         )
                 else
                   Text(
                     invitedGuest.possiblePresence ?? '-',
-                    style: AppFonts.nunito(color: Colors.orange, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
                   ),
               ],
             ),
@@ -494,15 +494,15 @@ class _InvitedGuestItem extends StatelessWidget {
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                Text('Nominal :', style: AppFonts.nunito()),
+                const Text('Nominal :', style: TextStyle()),
                 const Spacer(),
                 if (invitedGuest.nominal != null)
                   Text(
                     Currency.format(invitedGuest.nominal!.toDouble(), locale: 'id_ID', symbol: 'Rp. '),
-                    style: AppFonts.nunito(),
+                    style: const TextStyle(),
                   )
                 else
-                  Text('-', style: AppFonts.nunito()),
+                  const Text('-', style: TextStyle()),
               ],
             ),
           ),
@@ -550,7 +550,7 @@ class _RSVPItemSkeleton extends StatelessWidget {
                         child: Row(
                           children: [
                             SkeletonBox(width: Random().nextInt(50) + 70, height: 15),
-                            Text('', style: AppFonts.nunito(fontWeight: .w700)),
+                            const Text('', style: TextStyle(fontWeight: .w700)),
                           ],
                         ),
                       ),
@@ -578,19 +578,19 @@ class _RSVPItemSkeleton extends StatelessWidget {
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                Text('WhatsApp :', style: AppFonts.nunito()),
+                const Text('WhatsApp :', style: TextStyle()),
                 const Spacer(),
                 SkeletonBox(width: Random().nextInt(20) + 80, height: 14),
               ],
             ),
           ),
-          Padding(
-            padding: const .symmetric(horizontal: 14),
+          const Padding(
+            padding: .symmetric(horizontal: 14),
             child: Row(
               children: [
-                Text('Souvenir :', style: AppFonts.nunito()),
-                const Spacer(),
-                const SkeletonBox(width: 50, height: 14),
+                Text('Souvenir :', style: TextStyle()),
+                Spacer(),
+                SkeletonBox(width: 50, height: 14),
               ],
             ),
           ),
@@ -598,7 +598,7 @@ class _RSVPItemSkeleton extends StatelessWidget {
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :', style: AppFonts.nunito()),
+                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :', style: const TextStyle()),
                 const Spacer(),
                 SkeletonBox(width: Random().nextInt(50) + 50, height: 14),
               ],
