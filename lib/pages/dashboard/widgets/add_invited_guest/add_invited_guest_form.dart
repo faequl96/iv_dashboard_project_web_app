@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iv_dashboard_project_web_app/core/utils/contact_picker.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_controller.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_form_cache.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_form_duplicated.dart';
@@ -230,59 +229,6 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
                 SizedBox(width: 4),
                 Text(
                   'Tambah Form Tamu',
-                  style: TextStyle(fontWeight: .bold, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
-        Center(
-          child: GeneralEffectsButton(
-            onTap: () async {
-              final supported = ContactPicker.isSupported();
-              if (supported) {
-                final results = await ContactPicker.picks(
-                  allowMultiple: true,
-                  onPrint: (value) {
-                    if (context.mounted) {
-                      ShowModal.bottomSheet(
-                        context,
-                        contentBuilder: (_) {
-                          return Text(value);
-                        },
-                      );
-                    }
-                  },
-                );
-                if (context.mounted) {
-                  ShowModal.bottomSheet(
-                    context,
-                    contentBuilder: (_) {
-                      return Text('${results.map((e) => e.phone)}');
-                    },
-                  );
-                }
-              } else {
-                ShowModal.bottomSheet(
-                  context,
-                  contentBuilder: (_) {
-                    return const Text('Tidak Support');
-                  },
-                );
-              }
-            },
-            padding: const .only(top: 8, left: 14, right: 22, bottom: 8),
-            color: AppColor.primaryColor,
-            borderRadius: .circular(30),
-            useInitialElevation: true,
-            child: const Row(
-              mainAxisSize: .min,
-              children: [
-                Icon(Icons.add, size: 26, color: Colors.white),
-                SizedBox(width: 4),
-                Text(
-                  'Tambah Dari Kontak',
                   style: TextStyle(fontWeight: .bold, color: Colors.white),
                 ),
               ],

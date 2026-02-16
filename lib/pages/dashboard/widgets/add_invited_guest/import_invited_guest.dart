@@ -4,6 +4,7 @@ import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iv_dashboard_project_web_app/core/utils/contact_picker.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_import_model.dart';
 import 'package:iv_project_core/iv_project_core.dart';
 import 'package:iv_project_web_data/iv_project_web_data.dart';
@@ -36,7 +37,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
     return result.files.first;
   }
 
-  Future<void> _importInvitedGuests() async {
+  Future<void> _importFromExcel() async {
     try {
       final file = await _pickExcelFile();
       final fileBytes = file?.bytes;
@@ -100,6 +101,38 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
 
         widget.onCompleted(finalInvitedGuests);
       }
+    } catch (e) {
+      GeneralDialog.showValidateStateError('$e', durationInSeconds: 5);
+    }
+  }
+
+  Future<void> _importFromContact() async {
+    try {
+      final contacts = await ContactPicker.picks(allowMultiple: true);
+
+      final invitedGuests = <InvitedGuestImportModel>[];
+      for (int i = 0; i < contacts.length; i++) {
+        final contact = contacts[i];
+
+        invitedGuests.add(InvitedGuestImportModel(name: contact.name, phone: contact.phone, instance: ''));
+      }
+
+      final guestResponseIds = (_invitedGuestCubit.state.invitedGuests ?? [])
+          .where((e) => !e.nameInstance.contains('Guest'))
+          .map((e) => e.uniqueId)
+          .toList();
+      final guestIds = <String>[];
+      for (final guestId in guestResponseIds) {
+        if (guestId != null) guestIds.add(guestId.toLowerCase());
+      }
+
+      final finalInvitedGuests = invitedGuests
+          .where(
+            (e) => !guestIds.contains('${e.name.toLowerCase()}_${e.phone.toLowerCase()}_${widget.invitationId.toLowerCase()}'),
+          )
+          .toList();
+
+      widget.onCompleted(finalInvitedGuests);
     } catch (e) {
       GeneralDialog.showValidateStateError('$e', durationInSeconds: 5);
     }
@@ -183,7 +216,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: GeneralEffectsButton(
-                          onTap: _importInvitedGuests,
+                          onTap: _importFromExcel,
                           width: .maxFinite,
                           padding: const .symmetric(vertical: 12),
                           color: AppColor.primaryColor,
@@ -207,6 +240,59 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
           ),
         ),
         const SizedBox(height: 16),
+        if (ContactPicker.isSupported()) ...[
+          Padding(
+            padding: const .symmetric(horizontal: 16),
+            child: CardContainer(
+              color: Colors.white,
+              borderRadius: 10,
+              child: Padding(
+                padding: const .all(14),
+                child: Column(
+                  mainAxisSize: .min,
+                  children: [
+                    const SizedBox(height: 6),
+                    Text(
+                      _localeCubit.state.languageCode == 'id'
+                          ? 'Import Tamu Undangan dari Kontak'
+                          : 'Import Invited Guest from Contact',
+                      style: AppFonts.nunito(color: AppColor.primaryColor, fontSize: 17, fontWeight: .w800, height: 1.2),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      _localeCubit.state.languageCode == 'id'
+                          ? 'Silakan klik tombol di bawah ini. Daftar kontak Anda akan muncul. Kemudian, pilihlah kontak yang ingin diimpor. Setelah itu, klik tombol Selesai.'
+                          : 'Please click the button below. Your contact list will appear. Then, select the contacts you wish to import. Then, click the Done button.',
+                      style: AppFonts.nunito(fontSize: 15),
+                      textAlign: .center,
+                    ),
+                    const SizedBox(height: 14),
+                    Row(
+                      children: [
+                        GeneralEffectsButton(
+                          onTap: _importFromContact,
+                          width: .maxFinite,
+                          padding: const .symmetric(vertical: 12, horizontal: 24),
+                          color: AppColor.primaryColor,
+                          splashColor: Colors.white,
+                          borderRadius: .circular(30),
+                          useInitialElevation: true,
+                          child: Text(
+                            _localeCubit.state.languageCode == 'id' ? 'Import Kontak' : 'Import Contact',
+                            style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
         GeneralEffectsButton(
           onTap: () => widget.onCompleted([]),
           // width: .maxFinite,
