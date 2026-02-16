@@ -292,8 +292,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.4+1"
-      resolved-ref: "943158c2edb79afc6063a13ef2482318bc283747"
+      ref: "0.0.4+2"
+      resolved-ref: cebb6a4fbc37bc953d939a1039386940c1228c4b
       url: "https://github.com/faequl96/iv_project_widget_core.git"
     source: git
     version: "0.0.4"
@@ -501,8 +501,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.1.0"
-      resolved-ref: c603b5ea6a8cee5a46474fe91f333665274985f8
+      ref: "0.1.0+1"
+      resolved-ref: "0246172a30920f13043efefdde56fc1eb1697f25"
       url: "https://github.com/faequl96/quick_dev_sdk.git"
     source: git
     version: "0.1.0"
