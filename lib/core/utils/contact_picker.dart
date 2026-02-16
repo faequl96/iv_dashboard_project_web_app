@@ -35,13 +35,9 @@ class ContactPicker {
         if (item != null) {
           final contactJS = item as ContactInfo;
 
-          final name = (contactJS.name != null && contactJS.name!.toDart.isNotEmpty)
-              ? contactJS.name!.toDart.first.toDart
-              : 'Tanpa Nama';
+          final name = (contactJS.name != null && contactJS.name!.toDart.isNotEmpty) ? contactJS.name!.toDart.first.toDart : '';
 
-          final phone = (contactJS.tel != null && contactJS.tel!.toDart.isNotEmpty)
-              ? contactJS.tel!.toDart.first.toDart
-              : 'No Number';
+          final phone = (contactJS.tel != null && contactJS.tel!.toDart.isNotEmpty) ? contactJS.tel!.toDart.first.toDart : '';
 
           String? email;
           if (contactJS.email != null && contactJS.email!.toDart.isNotEmpty) {

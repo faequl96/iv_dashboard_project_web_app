@@ -257,14 +257,13 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(GlobalContextService.value).size;
 
     return SizedBox(
       height: size.height - 80,
       child: Column(
-        mainAxisSize: .min,
         children: [
-          Flexible(
+          Expanded(
             child: EditInvitedGuestForm(
               scrollController: _scrollController,
               invitationId: _invitationId ?? '',
