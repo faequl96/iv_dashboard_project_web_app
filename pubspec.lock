@@ -281,7 +281,7 @@ packages:
       path: "../iv_project_web_data"
       relative: true
     source: path
-    version: "0.0.2"
+    version: "0.2.2"
   iv_project_widget_core:
     dependency: "direct main"
     description:

@@ -26,10 +26,11 @@ class _App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routerConfig: NavigationService.router,
         theme: ThemeData(
-          inputDecorationTheme: InputDecorationTheme(floatingLabelStyle: TextStyle(color: Colors.grey.shade300)),
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: Colors.grey.shade100,
-            selectionHandleColor: Colors.grey.shade100,
+          textTheme: AppTextThemes.nunito(),
+          inputDecorationTheme: const InputDecorationTheme(floatingLabelStyle: TextStyle(color: AppColor.primaryColor)),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: AppColor.primaryColor,
+            selectionHandleColor: AppColor.primaryColor,
           ),
         ),
         locale: locale,

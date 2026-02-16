@@ -186,14 +186,13 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
           );
         }
 
-        final size = MediaQuery.of(context).size;
+        final size = MediaQuery.of(GlobalContextService.value).size;
 
         return SizedBox(
           height: size.height - 80,
           child: Column(
-            mainAxisSize: .min,
             children: [
-              Flexible(
+              Expanded(
                 child: AddInvitedGuestForm(
                   scrollController: _scrollController,
                   invitationId: _invitationId ?? '',

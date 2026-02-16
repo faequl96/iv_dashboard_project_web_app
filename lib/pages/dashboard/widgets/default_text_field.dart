@@ -73,7 +73,7 @@ class DefaultTextField extends StatelessWidget {
               ),
             ];
           }
-          if (textEditingController.text.isEmpty) return [SharedPersonalize.suffixMandatory];
+          if (textEditingController.text.isEmpty) return [SharedPersonalize.suffixMandatory()];
           return [
             SharedPersonalize.suffixClear(
               () => textEditingController.reset(),
