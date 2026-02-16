@@ -239,8 +239,8 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
         if (ContactPicker.isSupported()) ...[
+          const SizedBox(height: 12),
           Padding(
             padding: const .symmetric(horizontal: 16),
             child: CardContainer(
@@ -290,8 +290,8 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
         ],
+        const SizedBox(height: 20),
         GeneralEffectsButton(
           onTap: () => widget.onCompleted([]),
           // width: .maxFinite,
@@ -314,7 +314,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
             ],
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 36),
       ],
     );
   }
