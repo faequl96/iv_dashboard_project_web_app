@@ -36,20 +36,20 @@ class EditMessagePortal extends StatelessWidget {
       splashColor: Colors.white,
       borderRadius: .circular(30),
       useInitialElevation: true,
-      child: Row(
+      child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Column(
+          Column(
             mainAxisAlignment: .center,
             children: [
               SizedBox(height: 3),
               Icon(Icons.message, size: 24, color: Colors.white),
             ],
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(
             'Template Pesan',
-            style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w700),
+            style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w700),
           ),
         ],
       ),

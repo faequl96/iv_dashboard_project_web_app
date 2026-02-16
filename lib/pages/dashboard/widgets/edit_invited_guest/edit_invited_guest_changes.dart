@@ -45,7 +45,7 @@ class EditInvitedGuestChanges extends StatelessWidget {
                 useInitialElevation: true,
                 child: Text(
                   langCode == 'id' ? 'Konfirmasi' : 'Confirm',
-                  style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                  style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -94,7 +94,7 @@ class _Item extends StatelessWidget {
                         padding: const .only(left: 14, top: 4, bottom: 4),
                         child: Text(
                           '${index + 1}. ${item.nameInstance}',
-                          style: AppFonts.nunito(fontWeight: .w700, color: Colors.white),
+                          style: const TextStyle(fontWeight: .w700, color: Colors.white),
                         ),
                       ),
                     ),
@@ -109,9 +109,9 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Text('Nama :', style: AppFonts.nunito()),
+                  const Text('Nama :', style: TextStyle()),
                   const Spacer(),
-                  Text(item.name!, style: AppFonts.nunito()),
+                  Text(item.name!, style: const TextStyle()),
                 ],
               ),
             ),
@@ -120,9 +120,9 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Text('WhatsApp :', style: AppFonts.nunito()),
+                  const Text('WhatsApp :', style: TextStyle()),
                   const Spacer(),
-                  Text(item.phone!, style: AppFonts.nunito()),
+                  Text(item.phone!, style: const TextStyle()),
                 ],
               ),
             ),
@@ -131,9 +131,9 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Text('Keluarga/Teman Di :', style: AppFonts.nunito()),
+                  const Text('Keluarga/Teman Di :', style: TextStyle()),
                   const Spacer(),
-                  Text(item.instance!, style: AppFonts.nunito()),
+                  Text(item.instance!, style: const TextStyle()),
                 ],
               ),
             ),
@@ -142,9 +142,9 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Text('Souvenir :', style: AppFonts.nunito()),
+                  const Text('Souvenir :', style: TextStyle()),
                   const Spacer(),
-                  Text(item.souvenir!, style: AppFonts.nunito()),
+                  Text(item.souvenir!, style: const TextStyle()),
                 ],
               ),
             ),
@@ -153,9 +153,9 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Text('Nominal :', style: AppFonts.nunito()),
+                  const Text('Nominal :', style: TextStyle()),
                   const Spacer(),
-                  Text(item.nominal!, style: AppFonts.nunito()),
+                  Text(item.nominal!, style: const TextStyle()),
                 ],
               ),
             ),

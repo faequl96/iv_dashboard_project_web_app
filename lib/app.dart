@@ -26,7 +26,8 @@ class _App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routerConfig: NavigationService.router,
         theme: ThemeData(
-          textTheme: AppTextThemes.nunito(),
+          fontFamily: 'Nunito',
+          package: 'iv_project_core',
           inputDecorationTheme: const InputDecorationTheme(floatingLabelStyle: TextStyle(color: AppColor.primaryColor)),
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: AppColor.primaryColor,

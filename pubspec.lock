@@ -267,7 +267,7 @@ packages:
       path: "../iv_project_core"
       relative: true
     source: path
-    version: "0.1.1"
+    version: "0.1.2"
   iv_project_model:
     dependency: "direct main"
     description:

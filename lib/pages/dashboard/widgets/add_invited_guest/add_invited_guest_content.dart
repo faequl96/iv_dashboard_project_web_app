@@ -230,7 +230,7 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
                             ],
                             Text(
                               _localeCubit.state.languageCode == 'id' ? 'Upsert Tamu Undangan' : 'Upsert Invited Guests',
-                              style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                              style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
                             ),
                           ],
                         ),

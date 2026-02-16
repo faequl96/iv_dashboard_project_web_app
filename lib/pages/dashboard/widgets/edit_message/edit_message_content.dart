@@ -61,7 +61,7 @@ class _EditMessageContentState extends State<EditMessageContent> {
         const SizedBox(height: 16),
         Text(
           localeCubit.state.languageCode == 'id' ? 'Pilih Beberapa Template Dibawah Ini' : 'Select Some Templates Below',
-          style: AppFonts.nunito(fontWeight: .w800, fontSize: 15),
+          style: const TextStyle(fontWeight: .w800, fontSize: 15),
         ),
         const SizedBox(height: 8),
         SizedBox(
@@ -84,7 +84,7 @@ class _EditMessageContentState extends State<EditMessageContent> {
                   child: Stack(
                     alignment: .topRight,
                     children: [
-                      Text(message, style: AppFonts.nunito()),
+                      Text(message, style: const TextStyle()),
                       GeneralEffectsButton(
                         onTap: () {
                           _controller.text = message;
@@ -97,7 +97,7 @@ class _EditMessageContentState extends State<EditMessageContent> {
                         useInitialElevation: true,
                         child: Text(
                           localeCubit.state.languageCode == 'id' ? 'Gunakan Template Ini' : 'Use This Template',
-                          style: AppFonts.nunito(color: Colors.white, fontWeight: .w700),
+                          style: const TextStyle(color: Colors.white, fontWeight: .w700),
                         ),
                       ),
                     ],
@@ -120,10 +120,10 @@ class _EditMessageContentState extends State<EditMessageContent> {
             splashColor: Colors.white,
             borderRadius: .circular(30),
             useInitialElevation: true,
-            child: Center(
+            child: const Center(
               child: Text(
                 'OK',
-                style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w700),
+                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w700),
               ),
             ),
           ),

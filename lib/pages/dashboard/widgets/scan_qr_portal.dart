@@ -41,9 +41,9 @@ class ScanQrPortal extends StatelessWidget {
         left: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
         bottom: BorderSide(color: ColorConverter.lighten(AppColor.primaryColor, 40), width: 2),
       ),
-      child: Text(
+      child: const Text(
         'Scan QR',
-        style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w700),
+        style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w700),
       ),
     );
   }
