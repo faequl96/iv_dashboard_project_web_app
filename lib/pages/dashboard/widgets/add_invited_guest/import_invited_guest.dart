@@ -270,18 +270,25 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                     const SizedBox(height: 14),
                     Row(
                       children: [
-                        GeneralEffectsButton(
-                          onTap: _importFromContact,
-                          padding: const .symmetric(vertical: 12, horizontal: 24),
-                          color: AppColor.primaryColor,
-                          splashColor: Colors.white,
-                          borderRadius: .circular(30),
-                          useInitialElevation: true,
-                          child: Text(
-                            _localeCubit.state.languageCode == 'id' ? 'Import Kontak' : 'Import Contact',
-                            style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                        const Spacer(),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          flex: 2,
+                          child: GeneralEffectsButton(
+                            onTap: _importFromContact,
+                            padding: const .symmetric(vertical: 12, horizontal: 24),
+                            color: AppColor.primaryColor,
+                            splashColor: Colors.white,
+                            borderRadius: .circular(30),
+                            useInitialElevation: true,
+                            child: Text(
+                              _localeCubit.state.languageCode == 'id' ? 'Import Kontak' : 'Import Contact',
+                              style: AppFonts.nunito(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                            ),
                           ),
                         ),
+                        const SizedBox(width: 5),
+                        const Spacer(),
                       ],
                     ),
                     const SizedBox(height: 4),

@@ -274,9 +274,10 @@ class _InvitedGuestsState extends State<_InvitedGuests> {
           child: GeneralTextField(
             controller: _searchController,
             height: 46,
-            autofocus: true,
+            // autofocus: true,
             decoration: FieldDecoration(
               hintText: 'Cari : WhatsApp, Nama, Instansi',
+              hintStyle: TextStyle(color: Colors.grey.shade700),
               filled: true,
               fillColor: Colors.white,
               contentHorizontalPadding: 20,

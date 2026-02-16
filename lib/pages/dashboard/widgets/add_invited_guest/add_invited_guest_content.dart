@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_controller.dart';
+import 'package:iv_dashboard_project_web_app/models/invited_guest_form_cache.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/cubit/invited_guest_form_cubit.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/add_invited_guest/import_invited_guest.dart';
 import 'package:iv_dashboard_project_web_app/pages/dashboard/widgets/add_invited_guest/add_invited_guest_form.dart';
@@ -150,6 +151,8 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
                   ),
                 );
               } else {
+                final cache = <InvitedGuestFormCache>[];
+
                 for (int i = 0; i < values.length; i++) {
                   _invitedGuestControllers.add(
                     InvitedGuestController(
@@ -163,7 +166,19 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
                   _invitedGuestControllers[i].name.text = values[i].name;
                   _invitedGuestControllers[i].phone.text = values[i].phone;
                   _invitedGuestControllers[i].instance.text = values[i].instance;
+
+                  cache.add(
+                    InvitedGuestFormCache(
+                      name: _invitedGuestControllers[i].name.text,
+                      phone: _invitedGuestControllers[i].phone.text,
+                      instance: _invitedGuestControllers[i].instance.text,
+                      souvenir: _invitedGuestControllers[i].souvenir.text,
+                      nominal: _invitedGuestControllers[i].nominal.text,
+                    ),
+                  );
                 }
+
+                _invitedGuestFormCubit.invitedGuestsCreateCache(cache);
               }
 
               _invitedGuestFormCubit.isCreateImportedView(false);
