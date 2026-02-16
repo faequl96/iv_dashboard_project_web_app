@@ -181,8 +181,6 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
                 _invitedGuestFormCubit.invitedGuestsCreateCache(cache);
               }
 
-              await Future.delayed(const Duration(milliseconds: 150));
-
               _invitedGuestFormCubit.isCreateImportedView(false);
             },
           );
@@ -201,7 +199,6 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
                   controllers: _invitedGuestControllers,
                 ),
               ),
-              Text('${size.height}'),
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.white,
