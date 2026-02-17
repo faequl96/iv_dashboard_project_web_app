@@ -75,6 +75,7 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
     final duplicateds = <InvitedGuestFormDuplicated>[];
     for (int i = 0; i < widget.controllers.length; i++) {
       final controller = widget.controllers[i];
+      if (controller.name.text.isEmpty || controller.phone.text.isEmpty) continue;
       final uniqueId = '${controller.name.text}_${controller.phone.text}'.toLowerCase();
       if (duplicateds.map((e) => e.uniqueId).contains(uniqueId)) {
         for (final item in duplicateds) {
@@ -172,7 +173,8 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
         ),
         const SizedBox(height: 14),
         for (int i = 0; i < widget.controllers.length; i++) ...[
-          _FormField(
+          FormField(
+            key: widget.controllers[i].idKey,
             index: i,
             invitationId: widget.invitationId,
             formControllersLength: widget.controllers.length,
@@ -186,10 +188,16 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
             onChangeInstance: (_) => _set(i),
             onChangeSouvenir: (_) => _set(i),
             onDelete: (value) {
+              widget.controllers[i].name.dispose();
+              widget.controllers[i].phone.dispose();
+              widget.controllers[i].instance.dispose();
+              widget.controllers[i].souvenir.dispose();
+              widget.controllers[i].nominal.dispose();
+
               widget.controllers.removeAt(value);
               _setRebuildForms();
+              _setCache();
               setState(() {});
-              _set(i);
             },
           ),
           const SizedBox(height: 10),
@@ -241,8 +249,9 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
   }
 }
 
-class _FormField extends StatelessWidget {
-  const _FormField({
+class FormField extends StatelessWidget {
+  const FormField({
+    super.key,
     required this.index,
     required this.invitationId,
     required this.formControllersLength,

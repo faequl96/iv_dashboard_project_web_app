@@ -162,7 +162,8 @@ class _EditInvitedGuestFormState extends State<EditInvitedGuestForm> {
         if (index == widget.controllers.length + 1) return const SizedBox(height: 20);
 
         final idx = index - 1;
-        return _FormField(
+        return FormField(
+          key: widget.controllers[index].idKey,
           index: idx,
           invitationId: widget.invitationId,
           nameInstance: widget.nameInstances[idx],
@@ -224,8 +225,9 @@ class _SouvenirTemplateChanger extends StatelessWidget {
   }
 }
 
-class _FormField extends StatelessWidget {
-  const _FormField({
+class FormField extends StatelessWidget {
+  const FormField({
+    super.key,
     required this.index,
     required this.invitationId,
     required this.nameInstance,

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -203,14 +204,26 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding: const .symmetric(horizontal: 14),
-                      child: Row(
-                        children: [
-                          EditMessagePortal(controller: _messageController, messages: _messages),
-                          const Spacer(),
-                          const EditInvitedGuestPortal(),
-                          const SizedBox(width: 10),
-                          const AddInvitedGuestPortal(),
-                        ],
+                      child: ClipRRect(
+                        borderRadius: .circular(40),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                          child: ColoredBox(
+                            color: Colors.white.withValues(alpha: .7),
+                            child: Padding(
+                              padding: const .all(8.0),
+                              child: Row(
+                                children: [
+                                  EditMessagePortal(controller: _messageController, messages: _messages),
+                                  const Spacer(),
+                                  const EditInvitedGuestPortal(),
+                                  const SizedBox(width: 10),
+                                  const AddInvitedGuestPortal(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   );

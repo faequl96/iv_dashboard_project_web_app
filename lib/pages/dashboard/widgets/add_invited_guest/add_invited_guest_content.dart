@@ -98,17 +98,13 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
         for (int i = 0; i < invitedGuestsCache.length; i++) {
           _invitedGuestControllers.add(
             InvitedGuestController(
-              name: TextEditingController(),
-              phone: TextEditingController(),
-              instance: TextEditingController(),
-              souvenir: TextEditingController(),
+              name: TextEditingController(text: invitedGuestsCache[i].name),
+              phone: TextEditingController(text: invitedGuestsCache[i].phone),
+              instance: TextEditingController(text: invitedGuestsCache[i].instance),
+              souvenir: TextEditingController(text: invitedGuestsCache[i].souvenir),
               nominal: TextEditingController(),
             ),
           );
-          _invitedGuestControllers[i].name.text = invitedGuestsCache[i].name;
-          _invitedGuestControllers[i].phone.text = invitedGuestsCache[i].phone;
-          _invitedGuestControllers[i].instance.text = invitedGuestsCache[i].instance;
-          _invitedGuestControllers[i].souvenir.text = invitedGuestsCache[i].souvenir;
         }
       } else {
         _invitedGuestFormCubit.isCreateImportedView(true);
@@ -128,6 +124,7 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
       controller.phone.dispose();
       controller.instance.dispose();
       controller.souvenir.dispose();
+      controller.nominal.dispose();
     }
   }
 
@@ -156,24 +153,21 @@ class _AddInvitedGuestContentState extends State<AddInvitedGuestContent> {
                 for (int i = 0; i < values.length; i++) {
                   _invitedGuestControllers.add(
                     InvitedGuestController(
-                      name: TextEditingController(),
-                      phone: TextEditingController(),
-                      instance: TextEditingController(),
+                      name: TextEditingController(text: values[i].name),
+                      phone: TextEditingController(text: values[i].phone),
+                      instance: TextEditingController(text: values[i].instance),
                       souvenir: TextEditingController(),
                       nominal: TextEditingController(),
                     ),
                   );
-                  _invitedGuestControllers[i].name.text = values[i].name;
-                  _invitedGuestControllers[i].phone.text = values[i].phone;
-                  _invitedGuestControllers[i].instance.text = values[i].instance;
 
                   cache.add(
                     InvitedGuestFormCache(
                       name: _invitedGuestControllers[i].name.text,
                       phone: _invitedGuestControllers[i].phone.text,
                       instance: _invitedGuestControllers[i].instance.text,
-                      souvenir: _invitedGuestControllers[i].souvenir.text,
-                      nominal: _invitedGuestControllers[i].nominal.text,
+                      souvenir: '',
+                      nominal: '',
                     ),
                   );
                 }
