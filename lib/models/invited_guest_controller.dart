@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 class InvitedGuestController {
   InvitedGuestController({
+    required this.id,
     required this.name,
     required this.phone,
     required this.instance,
@@ -10,6 +11,7 @@ class InvitedGuestController {
   });
 
   final Key idKey = UniqueKey();
+  final String id;
   final TextEditingController name;
   final TextEditingController phone;
   final TextEditingController instance;

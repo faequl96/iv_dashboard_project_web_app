@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class InvitedGuestFormCache extends Equatable {
   const InvitedGuestFormCache({
+    required this.id,
     required this.name,
     required this.phone,
     required this.instance,
@@ -9,6 +10,7 @@ class InvitedGuestFormCache extends Equatable {
     required this.nominal,
   });
 
+  final String id;
   final String name;
   final String phone;
   final String instance;

@@ -52,6 +52,7 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
           controller.souvenir.text.isNotEmpty) {
         invitedGuests.add(
           InvitedGuestFormCache(
+            id: '',
             name: controller.name.text,
             phone: controller.phone.text,
             instance: controller.instance.text,
@@ -108,6 +109,7 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
           : '';
       widget.controllers.add(
         InvitedGuestController(
+          id: '',
           name: TextEditingController(text: contacts.last.name),
           phone: TextEditingController(text: finalPhone),
           instance: TextEditingController(),
@@ -182,6 +184,7 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
       children: [
         const SizedBox(height: 18),
         Padding(
+          key: const ValueKey('SouvenirTemplateChanger'),
           padding: const .symmetric(horizontal: 14),
           child: GeneralTextField(
             controller: _souvenirValuesController,
@@ -226,11 +229,12 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
             onChangeInstance: (_) => _set(i),
             onChangeSouvenir: (_) => _set(i),
             onDelete: (value) {
-              widget.controllers[i].name.dispose();
-              widget.controllers[i].phone.dispose();
-              widget.controllers[i].instance.dispose();
-              widget.controllers[i].souvenir.dispose();
-              widget.controllers[i].nominal.dispose();
+              final controller = widget.controllers[i];
+              controller.name.dispose();
+              controller.phone.dispose();
+              controller.instance.dispose();
+              controller.souvenir.dispose();
+              controller.nominal.dispose();
 
               widget.controllers.removeAt(value);
               _setRebuildForms();
@@ -274,6 +278,7 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
                   onTap: () {
                     widget.controllers.add(
                       InvitedGuestController(
+                        id: '',
                         name: TextEditingController(),
                         phone: TextEditingController(),
                         instance: TextEditingController(),
@@ -318,6 +323,7 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
               onTap: () {
                 widget.controllers.add(
                   InvitedGuestController(
+                    id: '',
                     name: TextEditingController(),
                     phone: TextEditingController(),
                     instance: TextEditingController(),

@@ -172,15 +172,17 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
 
     if (invitedGuestsCache.isNotEmpty) {
       for (int i = 0; i < invitedGuestsCache.length; i++) {
-        final nameInstance = '${invitedGuestsCache[i].name} - ${invitedGuestsCache[i].instance}';
+        final invitedGuest = invitedGuestsCache[i];
+        final nameInstance = '${invitedGuest.name} - ${invitedGuest.instance}';
         _invitedGuestsNameInstance.add(nameInstance);
         _invitedGuestControllers.add(
           InvitedGuestController(
-            name: TextEditingController(text: invitedGuestsCache[i].name),
-            phone: TextEditingController(text: invitedGuestsCache[i].phone),
-            instance: TextEditingController(text: invitedGuestsCache[i].instance),
-            souvenir: TextEditingController(text: invitedGuestsCache[i].souvenir),
-            nominal: TextEditingController(text: invitedGuestsCache[i].nominal),
+            id: invitedGuest.id,
+            name: TextEditingController(text: invitedGuest.name),
+            phone: TextEditingController(text: invitedGuest.phone),
+            instance: TextEditingController(text: invitedGuest.instance),
+            souvenir: TextEditingController(text: invitedGuest.souvenir),
+            nominal: TextEditingController(text: invitedGuest.nominal),
           ),
         );
       }
@@ -189,40 +191,34 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
       if (invitedGuests.isNotEmpty) {
         final cache = <InvitedGuestFormCache>[];
         for (int i = 0; i < invitedGuests.length; i++) {
-          final nameInstance = '${invitedGuests[i].name} - ${invitedGuests[i].nameInstance.split('_').last.replaceAll('-', ' ')}';
+          final invitedGuest = invitedGuests[i];
+          final nameInstance = '${invitedGuest.name} - ${invitedGuest.nameInstance.split('_').last.replaceAll('-', ' ')}';
           _invitedGuestsNameInstance.add(nameInstance);
           _invitedGuestControllers.add(
             InvitedGuestController(
-              name: TextEditingController(text: invitedGuests[i].name),
-              phone: TextEditingController(text: invitedGuests[i].phone ?? ''),
-              instance: TextEditingController(text: invitedGuests[i].nameInstance.split('_').last.replaceAll('-', ' ')),
-              souvenir: TextEditingController(text: invitedGuests[i].souvenir ?? ''),
-              nominal: TextEditingController(text: '${(invitedGuests[i].nominal ?? '')}'),
+              id: invitedGuest.id,
+              name: TextEditingController(text: invitedGuest.name),
+              phone: TextEditingController(text: invitedGuest.phone ?? ''),
+              instance: TextEditingController(text: invitedGuest.nameInstance.split('_').last.replaceAll('-', ' ')),
+              souvenir: TextEditingController(text: invitedGuest.souvenir ?? ''),
+              nominal: TextEditingController(text: '${(invitedGuest.nominal ?? '')}'),
             ),
           );
 
+          final invitedGuestController = _invitedGuestControllers[i];
           cache.add(
             InvitedGuestFormCache(
-              name: _invitedGuestControllers[i].name.text,
-              phone: _invitedGuestControllers[i].phone.text,
-              instance: _invitedGuestControllers[i].instance.text,
-              souvenir: _invitedGuestControllers[i].souvenir.text,
-              nominal: _invitedGuestControllers[i].nominal.text,
+              id: invitedGuest.id,
+              name: invitedGuestController.name.text,
+              phone: invitedGuestController.phone.text,
+              instance: invitedGuestController.instance.text,
+              souvenir: invitedGuestController.souvenir.text,
+              nominal: invitedGuestController.nominal.text,
             ),
           );
         }
 
         _invitedGuestFormCubit.invitedGuestsEditCache(cache);
-      } else {
-        _invitedGuestControllers.add(
-          InvitedGuestController(
-            name: TextEditingController(),
-            phone: TextEditingController(),
-            instance: TextEditingController(),
-            souvenir: TextEditingController(),
-            nominal: TextEditingController(),
-          ),
-        );
       }
     }
   }

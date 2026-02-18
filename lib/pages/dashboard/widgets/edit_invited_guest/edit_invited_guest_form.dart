@@ -60,6 +60,7 @@ class _EditInvitedGuestFormState extends State<EditInvitedGuestForm> {
           controller.nominal.text.isNotEmpty) {
         invitedGuests.add(
           InvitedGuestFormCache(
+            id: controller.id,
             name: controller.name.text,
             phone: controller.phone.text,
             instance: controller.instance.text,
@@ -150,7 +151,8 @@ class _EditInvitedGuestFormState extends State<EditInvitedGuestForm> {
       itemCount: widget.controllers.length + 2,
       itemBuilder: (_, index) {
         if (index == 0) {
-          return _SouvenirTemplateChanger(
+          return SouvenirTemplateChanger(
+            key: const ValueKey('SouvenirTemplateChanger'),
             controller: _souvenirValuesController,
             onChange: (value) {
               StorageService.setString(_storageSouvenirValuesKey, value);
@@ -159,16 +161,17 @@ class _EditInvitedGuestFormState extends State<EditInvitedGuestForm> {
           );
         }
 
-        if (index == widget.controllers.length + 1) return const SizedBox(height: 20);
+        if (index == widget.controllers.length + 1) return const SizedBox(key: ValueKey('Spacer'), height: 20);
 
         final idx = index - 1;
+        final controller = widget.controllers[idx];
         return FormField(
-          key: widget.controllers[idx].idKey,
+          key: ValueKey(controller.id),
           index: idx,
           invitationId: widget.invitationId,
           nameInstance: widget.nameInstances[idx],
           formControllersLength: widget.controllers.length,
-          formController: widget.controllers[idx],
+          formController: controller,
           souvenirs: _souvenirValuesController.text.split(', '),
           rebuild: _rebuildForms[idx],
           duplicateUniqueIds: _duplicateUniqueIds,
@@ -183,8 +186,8 @@ class _EditInvitedGuestFormState extends State<EditInvitedGuestForm> {
   }
 }
 
-class _SouvenirTemplateChanger extends StatelessWidget {
-  const _SouvenirTemplateChanger({required this.controller, required this.onChange});
+class SouvenirTemplateChanger extends StatelessWidget {
+  const SouvenirTemplateChanger({super.key, required this.controller, required this.onChange});
 
   final TextEditingController controller;
   final void Function(String value) onChange;
