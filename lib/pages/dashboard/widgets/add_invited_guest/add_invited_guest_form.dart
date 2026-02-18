@@ -98,11 +98,18 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
   Future<void> _addFromContact() async {
     try {
       final contacts = await ContactPicker.picks(allowMultiple: false);
+      if (contacts.isEmpty) return;
 
+      final phone = contacts.last.phone;
+      final finalPhone = phone.isNotEmpty
+          ? phone[0] != '0'
+                ? phone.replaceAll('+62', '0')
+                : phone
+          : '';
       widget.controllers.add(
         InvitedGuestController(
-          name: TextEditingController(text: contacts.first.name),
-          phone: TextEditingController(text: contacts.first.phone),
+          name: TextEditingController(text: contacts.last.name),
+          phone: TextEditingController(text: finalPhone),
           instance: TextEditingController(),
           souvenir: TextEditingController(),
           nominal: TextEditingController(),

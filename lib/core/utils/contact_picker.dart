@@ -26,9 +26,11 @@ class ContactPicker {
       final options = {'multiple': allowMultiple}.jsify() as JSObject;
 
       final promise = contactsApi.callMethod('select'.toJS, props, options) as JSPromise;
-      final JSArray result = await promise.toDart as JSArray;
+      final JSAny? result = await promise.toDart;
+      if (result == null) return [];
+      final JSArray results = result as JSArray;
 
-      final List<JSAny?> dartList = result.toDart;
+      final List<JSAny?> dartList = results.toDart;
       final contacts = <Contact>[];
 
       for (var item in dartList) {

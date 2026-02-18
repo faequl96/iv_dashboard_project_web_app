@@ -15,7 +15,7 @@ class ImportInvitedGuest extends StatefulWidget {
   const ImportInvitedGuest({super.key, required this.invitationId, required this.onCompleted});
 
   final String invitationId;
-  final Function(List<InvitedGuestImportModel> values) onCompleted;
+  final void Function(List<InvitedGuestImportModel> values) onCompleted;
 
   @override
   State<ImportInvitedGuest> createState() => _ImportInvitedGuestState();
@@ -109,12 +109,22 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
   Future<void> _importFromContact() async {
     try {
       final contacts = await ContactPicker.picks(allowMultiple: true);
+      if (contacts.isEmpty) {
+        widget.onCompleted([]);
+        return;
+      }
 
       final invitedGuests = <InvitedGuestImportModel>[];
       for (int i = 0; i < contacts.length; i++) {
         final contact = contacts[i];
+        final phone = contact.phone;
+        final finalPhone = phone.isNotEmpty
+            ? phone[0] != '0'
+                  ? phone.replaceAll('+62', '0')
+                  : phone
+            : '';
 
-        invitedGuests.add(InvitedGuestImportModel(name: contact.name, phone: contact.phone, instance: ''));
+        invitedGuests.add(InvitedGuestImportModel(name: contact.name, phone: finalPhone, instance: ''));
       }
 
       final guestResponseIds = (_invitedGuestCubit.state.invitedGuests ?? [])
@@ -281,9 +291,11 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                             splashColor: Colors.white,
                             borderRadius: .circular(30),
                             useInitialElevation: true,
-                            child: Text(
-                              _localeCubit.state.languageCode == 'id' ? 'Import' : 'Import',
-                              style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                            child: Center(
+                              child: Text(
+                                _localeCubit.state.languageCode == 'id' ? 'Import' : 'Import',
+                                style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
+                              ),
                             ),
                           ),
                         ),
