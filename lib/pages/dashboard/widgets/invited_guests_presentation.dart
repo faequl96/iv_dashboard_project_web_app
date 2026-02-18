@@ -204,22 +204,31 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding: const .symmetric(horizontal: 14),
-                      child: ClipRRect(
-                        borderRadius: .circular(40),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                          child: ColoredBox(
-                            color: Colors.white.withValues(alpha: .7),
-                            child: Padding(
-                              padding: const .all(8.0),
-                              child: Row(
-                                children: [
-                                  EditMessagePortal(controller: _messageController, messages: _messages),
-                                  const Spacer(),
-                                  const EditInvitedGuestPortal(),
-                                  const SizedBox(width: 10),
-                                  const AddInvitedGuestPortal(),
-                                ],
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: .all(color: Colors.black12),
+                          borderRadius: .circular(40),
+                        ),
+                        child: Padding(
+                          padding: const .all(1.5),
+                          child: ClipRRect(
+                            borderRadius: .circular(40),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                              child: ColoredBox(
+                                color: ColorConverter.lighten(AppColor.primaryColor, 85).withValues(alpha: .3),
+                                child: Padding(
+                                  padding: const .all(8.0),
+                                  child: Row(
+                                    children: [
+                                      EditMessagePortal(controller: _messageController, messages: _messages),
+                                      const Spacer(),
+                                      const EditInvitedGuestPortal(),
+                                      const SizedBox(width: 10),
+                                      const AddInvitedGuestPortal(),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ),

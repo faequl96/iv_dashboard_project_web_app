@@ -109,9 +109,21 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  const Text('Nama :', style: TextStyle()),
+                  const Text('Nama :', style: TextStyle(fontSize: 15)),
                   const Spacer(),
-                  Text(item.name!, style: const TextStyle()),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: item.name!.split('_').first),
+                        const TextSpan(
+                          text: ' ➜ ',
+                          style: TextStyle(color: AppColor.primaryColor, fontSize: 14),
+                        ),
+                        TextSpan(text: item.name!.split('_').last),
+                      ],
+                    ),
+                    style: const TextStyle(fontSize: 15),
+                  ),
                 ],
               ),
             ),
@@ -120,9 +132,21 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  const Text('WhatsApp :', style: TextStyle()),
+                  const Text('WhatsApp :', style: TextStyle(fontSize: 15)),
                   const Spacer(),
-                  Text(item.phone!, style: const TextStyle()),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: item.phone!.split('_').first),
+                        const TextSpan(
+                          text: ' ➜ ',
+                          style: TextStyle(color: AppColor.primaryColor, fontSize: 14),
+                        ),
+                        TextSpan(text: item.phone!.split('_').last),
+                      ],
+                    ),
+                    style: const TextStyle(fontSize: 15),
+                  ),
                 ],
               ),
             ),
@@ -131,9 +155,21 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  const Text('Keluarga/Teman Di :', style: TextStyle()),
+                  const Text('Keluarga/Teman Di :', style: TextStyle(fontSize: 15)),
                   const Spacer(),
-                  Text(item.instance!, style: const TextStyle()),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: item.instance!.split('_').first),
+                        const TextSpan(
+                          text: ' ➜ ',
+                          style: TextStyle(color: AppColor.primaryColor, fontSize: 14),
+                        ),
+                        TextSpan(text: item.instance!.split('_').last),
+                      ],
+                    ),
+                    style: const TextStyle(fontSize: 15),
+                  ),
                 ],
               ),
             ),
@@ -142,9 +178,21 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  const Text('Souvenir :', style: TextStyle()),
+                  const Text('Souvenir :', style: TextStyle(fontSize: 15)),
                   const Spacer(),
-                  Text(item.souvenir!, style: const TextStyle()),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: item.souvenir!.split('_').first),
+                        const TextSpan(
+                          text: ' ➜ ',
+                          style: TextStyle(color: AppColor.primaryColor, fontSize: 14),
+                        ),
+                        TextSpan(text: item.souvenir!.split('_').last),
+                      ],
+                    ),
+                    style: const TextStyle(fontSize: 15),
+                  ),
                 ],
               ),
             ),
@@ -153,9 +201,21 @@ class _Item extends StatelessWidget {
               padding: const .symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  const Text('Nominal :', style: TextStyle()),
+                  const Text('Nominal :', style: TextStyle(fontSize: 15)),
                   const Spacer(),
-                  Text(item.nominal!, style: const TextStyle()),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: item.nominal!.split('_').first),
+                        const TextSpan(
+                          text: ' ➜ ',
+                          style: TextStyle(color: AppColor.primaryColor, fontSize: 14),
+                        ),
+                        TextSpan(text: item.nominal!.split('_').last),
+                      ],
+                    ),
+                    style: const TextStyle(fontSize: 15),
+                  ),
                 ],
               ),
             ),

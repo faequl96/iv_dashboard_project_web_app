@@ -163,7 +163,7 @@ class _EditInvitedGuestFormState extends State<EditInvitedGuestForm> {
 
         final idx = index - 1;
         return FormField(
-          key: widget.controllers[index].idKey,
+          key: widget.controllers[idx].idKey,
           index: idx,
           invitationId: widget.invitationId,
           nameInstance: widget.nameInstances[idx],
