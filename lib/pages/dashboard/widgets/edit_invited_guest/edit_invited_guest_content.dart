@@ -62,7 +62,6 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
         }
 
         final nominal = controller.nominal.text;
-
         if (!_duplicatedInvitedGuestIds.contains(invitedGuests[i].id)) {
           invitedGuestRequests.add(
             EditInvitedGuestRequest(
@@ -79,13 +78,8 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
       }
 
       if (isBreaked) return;
-      if (invitedGuestRequests.isEmpty) {
-        GeneralDialog.showValidateStateError('Minimal isi satu Form Tamu', durationInSeconds: 5);
-        return;
-      }
 
       final requests = <EditInvitedGuestRequest>[];
-
       final invitedGuestEditChanges = <InvitedGuestEditChange>[];
       for (int i = 0; i < invitedGuestRequests.length; i++) {
         final invitedGuestRequest = invitedGuestRequests[i];
@@ -100,18 +94,18 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
             invitedGuestRequest.nominal != invitedGuest.nominal) {
           final invitedGuestChange = InvitedGuestEditChange(
             nameInstance: invitedGuest.nameInstance.replaceAll('-', ' ').replaceAll('_', ' - '),
-            name: invitedGuestRequest.name != invitedGuest.name ? '${invitedGuest.name} => ${invitedGuestRequest.name}' : null,
+            name: invitedGuestRequest.name != invitedGuest.name ? '${invitedGuest.name}_${invitedGuestRequest.name}' : null,
             phone: invitedGuestRequest.phone != invitedGuest.phone
-                ? '${invitedGuest.phone} => ${invitedGuestRequest.phone}'
+                ? '${invitedGuest.phone ?? '-'}_${invitedGuestRequest.phone}'
                 : null,
             instance: invitedGuestRequestInstance != invitedGuestInstance
-                ? '$invitedGuestInstance => $invitedGuestRequestInstance'
+                ? '${invitedGuestInstance}_$invitedGuestRequestInstance'
                 : null,
             souvenir: invitedGuestRequest.souvenir != invitedGuest.souvenir
-                ? '${invitedGuest.souvenir} => ${invitedGuestRequest.souvenir}'
+                ? '${invitedGuest.souvenir ?? '-'}_${invitedGuestRequest.souvenir ?? '-'}'
                 : null,
             nominal: invitedGuestRequest.nominal != invitedGuest.nominal
-                ? '${invitedGuest.nominal} => ${invitedGuestRequest.nominal}'
+                ? '${invitedGuest.nominal ?? '-'}_${invitedGuestRequest.nominal ?? '-'}'
                 : null,
           );
 
@@ -119,6 +113,11 @@ class _EditInvitedGuestContentState extends State<EditInvitedGuestContent> {
 
           requests.add(invitedGuestRequest);
         }
+      }
+
+      if (invitedGuestEditChanges.isEmpty) {
+        GeneralDialog.showValidateStateError('Minimal edit satu Form Tamu', durationInSeconds: 5);
+        return;
       }
 
       final confirmed = await ShowModal.bottomSheet<bool?>(
