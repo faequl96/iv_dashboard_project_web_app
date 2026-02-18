@@ -203,12 +203,12 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                             mainAxisSize: .min,
                             mainAxisAlignment: .center,
                             children: [
+                              const Icon(Icons.download, color: AppColor.primaryColor),
+                              const SizedBox(width: 6),
                               Text(
                                 _localeCubit.state.languageCode == 'id' ? 'Unduh Form' : 'Download Form',
                                 style: const TextStyle(color: AppColor.primaryColor, fontSize: 15, fontWeight: .w800),
                               ),
-                              const SizedBox(width: 6),
-                              const Icon(Icons.download, color: AppColor.primaryColor),
                             ],
                           ),
                         ),
@@ -225,7 +225,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                           useInitialElevation: true,
                           child: Center(
                             child: Text(
-                              _localeCubit.state.languageCode == 'id' ? 'Import Form' : 'Import Form',
+                              _localeCubit.state.languageCode == 'id' ? 'Import' : 'Import',
                               style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
                             ),
                           ),
@@ -282,7 +282,7 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
                             borderRadius: .circular(30),
                             useInitialElevation: true,
                             child: Text(
-                              _localeCubit.state.languageCode == 'id' ? 'Import Kontak' : 'Import Contact',
+                              _localeCubit.state.languageCode == 'id' ? 'Import' : 'Import',
                               style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: .w800),
                             ),
                           ),
@@ -312,12 +312,12 @@ class _ImportInvitedGuestState extends State<ImportInvitedGuest> {
             mainAxisSize: .min,
             mainAxisAlignment: .center,
             children: [
+              const Icon(Icons.input_rounded, color: Colors.orange),
+              const SizedBox(width: 10),
               Text(
                 _localeCubit.state.languageCode == 'id' ? 'Lewati Import' : 'Lewati Import',
                 style: const TextStyle(color: Colors.orange, fontSize: 15, fontWeight: .w800),
               ),
-              const SizedBox(width: 10),
-              const Icon(Icons.input_rounded, color: Colors.orange),
             ],
           ),
         ),
