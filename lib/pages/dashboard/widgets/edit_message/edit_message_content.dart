@@ -63,49 +63,69 @@ class _EditMessageContentState extends State<EditMessageContent> {
           localeCubit.state.languageCode == 'id' ? 'Pilih Beberapa Template Dibawah Ini' : 'Select Some Templates Below',
           style: const TextStyle(fontWeight: .w800, fontSize: 15),
         ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 360,
-          child: ListView.builder(
-            padding: const .only(left: 14, right: 14, bottom: 10),
-            itemCount: widget.messages.length,
-            itemBuilder: (_, index) {
-              final message = widget.messages[index];
-              return Card(
-                margin: const .symmetric(vertical: 4),
-                color: Colors.white,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(color: Colors.black12),
-                ),
-                child: Padding(
-                  padding: const .all(14),
-                  child: Stack(
-                    alignment: .topRight,
-                    children: [
-                      Text(message, style: const TextStyle()),
-                      GeneralEffectsButton(
-                        onTap: () {
-                          _controller.text = message;
-                          _selectedMessage = message;
-                        },
-                        padding: const .symmetric(horizontal: 16, vertical: 8),
-                        color: AppColor.primaryColor,
-                        splashColor: Colors.white,
-                        borderRadius: .circular(30),
-                        useInitialElevation: true,
-                        child: Text(
-                          localeCubit.state.languageCode == 'id' ? 'Gunakan Template Ini' : 'Use This Template',
-                          style: const TextStyle(color: Colors.white, fontWeight: .w700),
-                        ),
+        const SizedBox(height: 6),
+        Stack(
+          children: [
+            SizedBox(
+              height: 360,
+              child: ListView.builder(
+                padding: const .only(top: 6, left: 14, right: 14, bottom: 10),
+                itemCount: widget.messages.length,
+                itemBuilder: (_, index) {
+                  final message = widget.messages[index];
+                  return Card(
+                    margin: const .symmetric(vertical: 4),
+                    color: Colors.white,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: .circular(10),
+                      side: const BorderSide(color: Colors.black12),
+                    ),
+                    child: Padding(
+                      padding: const .all(14),
+                      child: Stack(
+                        alignment: .topRight,
+                        children: [
+                          Text(message),
+                          GeneralEffectsButton(
+                            onTap: () {
+                              _controller.text = message;
+                              _selectedMessage = message;
+                            },
+                            padding: const .symmetric(horizontal: 16, vertical: 8),
+                            color: AppColor.primaryColor,
+                            splashColor: Colors.white,
+                            borderRadius: .circular(30),
+                            useInitialElevation: true,
+                            child: Text(
+                              localeCubit.state.languageCode == 'id' ? 'Gunakan Template Ini' : 'Use This Template',
+                              style: const TextStyle(color: Colors.white, fontWeight: .w700),
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 18,
+              width: .maxFinite,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: .topCenter,
+                    end: .bottomCenter,
+                    colors: [
+                      ColorConverter.lighten(AppColor.primaryColor, 96),
+                      ColorConverter.lighten(AppColor.primaryColor, 96).withValues(alpha: .0),
                     ],
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+          ],
         ),
         Padding(
           padding: const .all(14),

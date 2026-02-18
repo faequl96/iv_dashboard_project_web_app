@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iv_dashboard_project_web_app/core/utils/contact_picker.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_controller.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_form_cache.dart';
 import 'package:iv_dashboard_project_web_app/models/invited_guest_form_duplicated.dart';
@@ -92,6 +93,36 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
     }
 
     if (!isInitial) _setCache();
+  }
+
+  Future<void> _addFromContact() async {
+    try {
+      final contacts = await ContactPicker.picks(allowMultiple: false);
+
+      widget.controllers.add(
+        InvitedGuestController(
+          name: TextEditingController(text: contacts.first.name),
+          phone: TextEditingController(text: contacts.first.phone),
+          instance: TextEditingController(),
+          souvenir: TextEditingController(),
+          nominal: TextEditingController(),
+        ),
+      );
+      _setRebuildForms();
+      setState(() {});
+
+      Future.delayed(const Duration(milliseconds: 50), () {
+        widget.scrollController.animateTo(
+          widget.scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.ease,
+        );
+      });
+
+      _set(widget.controllers.length - 1);
+    } catch (e) {
+      GeneralDialog.showValidateStateError('$e', durationInSeconds: 5);
+    }
   }
 
   @override
@@ -203,46 +234,118 @@ class _AddInvitedGuestFormState extends State<AddInvitedGuestForm> {
           const SizedBox(height: 10),
         ],
         const SizedBox(height: 14),
-        Center(
-          child: GeneralEffectsButton(
-            onTap: () {
-              widget.controllers.add(
-                InvitedGuestController(
-                  name: TextEditingController(),
-                  phone: TextEditingController(),
-                  instance: TextEditingController(),
-                  souvenir: TextEditingController(),
-                  nominal: TextEditingController(),
+        if (ContactPicker.isSupported())
+          Row(
+            children: [
+              const SizedBox(width: 16),
+              Expanded(
+                child: GeneralEffectsButton(
+                  onTap: _addFromContact,
+                  width: .maxFinite,
+                  padding: const .only(top: 10, left: 14, right: 22, bottom: 10),
+                  color: ColorConverter.lighten(AppColor.primaryColor, 96),
+                  splashColor: Colors.white,
+                  borderRadius: .circular(30),
+                  border: .all(color: AppColor.primaryColor, width: 2),
+                  useInitialElevation: true,
+                  child: const Row(
+                    mainAxisAlignment: .center,
+                    children: [
+                      Icon(Icons.add, size: 26, color: AppColor.primaryColor),
+                      SizedBox(width: 4),
+                      Text(
+                        'Dari Kontak',
+                        style: TextStyle(color: AppColor.primaryColor, fontSize: 15, fontWeight: .w800),
+                      ),
+                    ],
+                  ),
                 ),
-              );
-              _setRebuildForms();
-              setState(() {});
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: GeneralEffectsButton(
+                  onTap: () {
+                    widget.controllers.add(
+                      InvitedGuestController(
+                        name: TextEditingController(),
+                        phone: TextEditingController(),
+                        instance: TextEditingController(),
+                        souvenir: TextEditingController(),
+                        nominal: TextEditingController(),
+                      ),
+                    );
+                    _setRebuildForms();
+                    setState(() {});
 
-              Future.delayed(const Duration(milliseconds: 50), () {
-                widget.scrollController.animateTo(
-                  widget.scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.ease,
-                );
-              });
-            },
-            padding: const .only(top: 8, left: 14, right: 22, bottom: 8),
-            color: AppColor.primaryColor,
-            borderRadius: .circular(30),
-            useInitialElevation: true,
-            child: const Row(
-              mainAxisSize: .min,
-              children: [
-                Icon(Icons.add, size: 26, color: Colors.white),
-                SizedBox(width: 4),
-                Text(
-                  'Tambah Form Tamu',
-                  style: TextStyle(fontWeight: .bold, color: Colors.white),
+                    Future.delayed(const Duration(milliseconds: 50), () {
+                      widget.scrollController.animateTo(
+                        widget.scrollController.position.maxScrollExtent,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.ease,
+                      );
+                    });
+                  },
+                  padding: const .only(top: 10, left: 14, right: 22, bottom: 10),
+                  color: AppColor.primaryColor,
+                  borderRadius: .circular(30),
+                  useInitialElevation: true,
+                  child: const Row(
+                    mainAxisAlignment: .center,
+                    children: [
+                      Icon(Icons.add, size: 26, color: Colors.white),
+                      SizedBox(width: 4),
+                      Text(
+                        'Tambah',
+                        style: TextStyle(fontWeight: .bold, color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
+              const SizedBox(width: 16),
+            ],
+          )
+        else
+          Center(
+            child: GeneralEffectsButton(
+              onTap: () {
+                widget.controllers.add(
+                  InvitedGuestController(
+                    name: TextEditingController(),
+                    phone: TextEditingController(),
+                    instance: TextEditingController(),
+                    souvenir: TextEditingController(),
+                    nominal: TextEditingController(),
+                  ),
+                );
+                _setRebuildForms();
+                setState(() {});
+
+                Future.delayed(const Duration(milliseconds: 50), () {
+                  widget.scrollController.animateTo(
+                    widget.scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.ease,
+                  );
+                });
+              },
+              padding: const .only(top: 10, left: 14, right: 22, bottom: 10),
+              color: AppColor.primaryColor,
+              borderRadius: .circular(30),
+              useInitialElevation: true,
+              child: const Row(
+                mainAxisSize: .min,
+                children: [
+                  Icon(Icons.add, size: 26, color: Colors.white),
+                  SizedBox(width: 4),
+                  Text(
+                    'Tambah Form Tamu',
+                    style: TextStyle(fontWeight: .bold, color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
         const SizedBox(height: 20),
       ],
     );

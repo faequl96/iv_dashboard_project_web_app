@@ -144,7 +144,7 @@ class _InvitedGuestsPresentationState extends State<InvitedGuestsPresentation> {
                       padding: const .only(top: 14, bottom: 8),
                       children: [
                         for (int i = 0; i < guests.length; i++)
-                          _InvitedGuestItem(
+                          InvitedGuestItem(
                             index: i,
                             invitationId: widget.invitationId,
                             brideName: widget.brideName,
@@ -270,13 +270,13 @@ class _InvitedGuestsState extends State<_InvitedGuests> {
 
   bool _isSearch = false;
 
-  final List<InvitedGuestResponse> invitedGuests = [];
+  final List<InvitedGuestResponse> _invitedGuests = [];
 
   @override
   void initState() {
     super.initState();
 
-    invitedGuests.addAll(widget.items);
+    _invitedGuests.addAll(widget.items);
   }
 
   @override
@@ -288,78 +288,97 @@ class _InvitedGuestsState extends State<_InvitedGuests> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const .only(top: 18, bottom: 8),
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
-          child: GeneralTextField(
-            controller: _searchController,
-            height: 46,
-            // autofocus: true,
-            decoration: FieldDecoration(
-              hintText: 'Cari : WhatsApp, Nama, Instansi',
-              hintStyle: TextStyle(color: Colors.grey.shade700),
-              filled: true,
-              fillColor: Colors.white,
-              contentHorizontalPadding: 20,
-              suffixIcons: () {
-                if (_searchController.text.isEmpty) return [];
-                return [SharedPersonalize.suffixClear(() => _searchController.clear())];
-              },
-              enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black12),
-                borderRadius: BorderRadius.circular(50),
+    return ListView.builder(
+      padding: const .only(top: 18, bottom: 100),
+      itemCount: _invitedGuests.length + 1,
+      itemBuilder: (_, index) {
+        if (index == 0) {
+          return Padding(
+            key: const ValueKey('SearchField'),
+            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
+            child: GeneralTextField(
+              controller: _searchController,
+              height: 46,
+              // autofocus: true,
+              decoration: FieldDecoration(
+                hintText: 'Cari : WhatsApp, Nama, Instansi',
+                hintStyle: TextStyle(color: Colors.grey.shade700),
+                filled: true,
+                fillColor: Colors.white,
+                contentHorizontalPadding: 20,
+                suffixIcons: () {
+                  if (_searchController.text.isEmpty) return [];
+                  return [SharedPersonalize.suffixClear(() => _searchController.clear())];
+                },
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(50),
+                ),
               ),
-              disabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black12),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.black12),
-                borderRadius: BorderRadius.circular(50),
-              ),
-            ),
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                _isSearch = true;
-                invitedGuests.clear();
-                final keyword = value.toLowerCase();
-                bool isMatch(InvitedGuestResponse e) {
-                  final isPhoneMatch = (e.phone ?? '').toLowerCase().contains(keyword);
-                  final isNicknameMatch = e.name.toLowerCase().contains(keyword);
-                  final isNameInstanceMatch = e.nameInstance.toLowerCase().contains(keyword);
-                  return isPhoneMatch || isNicknameMatch || isNameInstanceMatch;
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  _isSearch = true;
+                  _invitedGuests.clear();
+                  final keyword = value.toLowerCase();
+                  bool isMatch(InvitedGuestResponse e) {
+                    final isPhoneMatch = (e.phone ?? '').toLowerCase().contains(keyword);
+                    final isNicknameMatch = e.name.toLowerCase().contains(keyword);
+                    final isNameInstanceMatch = e.nameInstance.toLowerCase().contains(keyword);
+                    return isPhoneMatch || isNicknameMatch || isNameInstanceMatch;
+                  }
+
+                  final matches = widget.items.where((e) => isMatch(e));
+                  _invitedGuests.addAll(matches);
+                } else {
+                  _isSearch = false;
+                  _invitedGuests.clear();
+                  _invitedGuests.addAll(widget.items);
                 }
 
-                final matches = widget.items.where((e) => isMatch(e));
-                invitedGuests.addAll(matches);
-              } else {
-                _isSearch = false;
-                invitedGuests.clear();
-                invitedGuests.addAll(widget.items);
-              }
+                setState(() {});
+              },
+            ),
+          );
+        }
 
-              setState(() {});
-            },
-          ),
-        ),
-        for (int i = 0; i < invitedGuests.length; i++)
-          _InvitedGuestItem(
-            index: _isSearch ? null : i,
-            controller: widget.messageController,
-            invitationId: widget.invitationId,
-            brideName: widget.brideName,
-            groomName: widget.groomName,
-            invitedGuest: invitedGuests[i],
-          ),
-      ],
+        final idx = index - 1;
+        return InvitedGuestItem(
+          key: ValueKey(_invitedGuests[idx].id),
+          index: _isSearch ? null : idx,
+          controller: widget.messageController,
+          invitationId: widget.invitationId,
+          brideName: widget.brideName,
+          groomName: widget.groomName,
+          invitedGuest: _invitedGuests[idx],
+        );
+      },
+      // children: [
+      //   ,
+      //   for (int i = 0; i < _invitedGuests.length; i++)
+      //     _InvitedGuestItem(
+      //       index: _isSearch ? null : i,
+      //       controller: widget.messageController,
+      //       invitationId: widget.invitationId,
+      //       brideName: widget.brideName,
+      //       groomName: widget.groomName,
+      //       invitedGuest: _invitedGuests[i],
+      //     ),
+      // ],
     );
   }
 }
 
-class _InvitedGuestItem extends StatelessWidget {
-  const _InvitedGuestItem({
+class InvitedGuestItem extends StatelessWidget {
+  const InvitedGuestItem({
+    super.key,
     this.index,
     required this.invitedGuest,
     required this.invitationId,
@@ -469,30 +488,18 @@ class _InvitedGuestItem extends StatelessWidget {
           if (invitedGuest.phone != null)
             Padding(
               padding: const .symmetric(horizontal: 14),
-              child: Row(
-                children: [
-                  const Text('WhatsApp :', style: TextStyle()),
-                  const Spacer(),
-                  Text(invitedGuest.phone!, style: const TextStyle()),
-                ],
-              ),
+              child: Row(children: [const Text('WhatsApp :'), const Spacer(), Text(invitedGuest.phone!)]),
             ),
           if (invitedGuest.souvenir != null)
             Padding(
               padding: const .symmetric(horizontal: 14),
-              child: Row(
-                children: [
-                  const Text('Souvenir :', style: TextStyle()),
-                  const Spacer(),
-                  Text(invitedGuest.souvenir!, style: const TextStyle()),
-                ],
-              ),
+              child: Row(children: [const Text('Souvenir :'), const Spacer(), Text(invitedGuest.souvenir!)]),
             ),
           Padding(
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :', style: const TextStyle()),
+                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :'),
                 const Spacer(),
                 if (invitedGuest.attendance != null)
                   invitedGuest.attendance! == true
@@ -516,15 +523,12 @@ class _InvitedGuestItem extends StatelessWidget {
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                const Text('Nominal :', style: TextStyle()),
+                const Text('Nominal :'),
                 const Spacer(),
                 if (invitedGuest.nominal != null)
-                  Text(
-                    Currency.format(invitedGuest.nominal!.toDouble(), locale: 'id_ID', symbol: 'Rp. '),
-                    style: const TextStyle(),
-                  )
+                  Text(Currency.format(invitedGuest.nominal!.toDouble(), locale: 'id_ID', symbol: 'Rp. '))
                 else
-                  const Text('-', style: TextStyle()),
+                  const Text('-'),
               ],
             ),
           ),
@@ -600,7 +604,7 @@ class _RSVPItemSkeleton extends StatelessWidget {
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                const Text('WhatsApp :', style: TextStyle()),
+                const Text('WhatsApp :'),
                 const Spacer(),
                 SkeletonBox(width: Random().nextInt(20) + 80, height: 14),
               ],
@@ -608,19 +612,13 @@ class _RSVPItemSkeleton extends StatelessWidget {
           ),
           const Padding(
             padding: .symmetric(horizontal: 14),
-            child: Row(
-              children: [
-                Text('Souvenir :', style: TextStyle()),
-                Spacer(),
-                SkeletonBox(width: 50, height: 14),
-              ],
-            ),
+            child: Row(children: [Text('Souvenir :'), Spacer(), SkeletonBox(width: 50, height: 14)]),
           ),
           Padding(
             padding: const .symmetric(horizontal: 14),
             child: Row(
               children: [
-                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :', style: const TextStyle()),
+                Text(localeCubit.state.languageCode == 'id' ? 'Kehadiran :' : 'Attendance :'),
                 const Spacer(),
                 SkeletonBox(width: Random().nextInt(50) + 50, height: 14),
               ],
