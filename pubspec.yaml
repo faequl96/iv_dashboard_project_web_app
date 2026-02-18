@@ -20,17 +20,17 @@ dependencies:
   iv_project_web_data:
     git:
       url: https://github.com/faequl96/iv_project_web_data.git
-      ref: 0.2.2+1
+      ref: 0.2.2+2
 
   iv_project_core:
     git:
       url: https://github.com/faequl96/iv_project_core.git
-      ref: 0.1.2
+      ref: 0.1.3
 
   iv_project_widget_core:
     git:
       url: https://github.com/faequl96/iv_project_widget_core.git
-      ref: 0.0.4+2
+      ref: 0.0.4+3
 
   quick_dev_sdk:
     git:

@@ -265,11 +265,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.1.2"
-      resolved-ref: "9164993239a7d18ddb4ccc4a00514443f46f6188"
+      ref: "0.1.3"
+      resolved-ref: "469c3e661f036f4b1ed02ca49a2988cdba0a7301"
       url: "https://github.com/faequl96/iv_project_core.git"
     source: git
-    version: "0.1.2"
+    version: "0.1.3"
   iv_project_model:
     dependency: "direct main"
     description:
@@ -283,8 +283,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.2.2+1"
-      resolved-ref: "723d91566c2bfba527471f92bbad5a675bbf2838"
+      ref: "0.2.2+2"
+      resolved-ref: "04c09283a565a67144568efa478041f452a2d96c"
       url: "https://github.com/faequl96/iv_project_web_data.git"
     source: git
     version: "0.2.2"
@@ -292,8 +292,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.4+2"
-      resolved-ref: cebb6a4fbc37bc953d939a1039386940c1228c4b
+      ref: "0.0.4+3"
+      resolved-ref: "874d0eeffe6f980956344b986762e8f00d1ccf12"
       url: "https://github.com/faequl96/iv_project_widget_core.git"
     source: git
     version: "0.0.4"
